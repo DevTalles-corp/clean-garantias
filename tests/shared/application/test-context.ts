@@ -3,6 +3,13 @@
 
 import { Attachment, type AttachmentOwner } from '@/attachments/domain/entities/attachment.entity';
 import type { AttachmentRepository } from '@/attachments/domain/repositories/attachment.repository';
+import type { AttachmentStorage } from '@/attachments/domain/services/attachment-storage';
+import type {
+  LibraryPhoto,
+  PhotoAccess,
+  PhotoLibrary,
+  PickedPhoto,
+} from '@/attachments/domain/services/photo-library';
 import { Category } from '@/categories/domain/entities/category.entity';
 import type { CategoryRepository } from '@/categories/domain/repositories/category.repository';
 import { Claim } from '@/claims/domain/entities/claim.entity';
@@ -99,6 +106,50 @@ class InMemoryWarrantyRepository extends InMemoryRepository<Warranty> implements
   }
 }
 
+class InMemoryAttachmentStorage implements AttachmentStorage {
+  readonly files = new Map<string, string>(); // ruta relativa -> origen
+
+  async save(sourceUri: string, fileName: string): Promise<string> {
+    const fileUri = `receipts/${fileName}`;
+    this.files.set(fileUri, sourceUri);
+    return fileUri;
+  }
+
+  async delete(fileUri: string): Promise<void> {
+    this.files.delete(fileUri);
+  }
+
+  resolveUri(fileUri: string): string | null {
+    return this.files.has(fileUri) ? `file:///documents/${fileUri}` : null;
+  }
+}
+
+class FakePhotoLibrary implements PhotoLibrary {
+  access: PhotoAccess = 'denied';
+  accessAfterRequest: PhotoAccess = 'all';
+  photos: LibraryPhoto[] = [];
+  picked: PickedPhoto = pickedPhoto;
+
+  async getAccess(): Promise<PhotoAccess> {
+    return this.access;
+  }
+
+  async requestAccess(): Promise<PhotoAccess> {
+    this.access = this.accessAfterRequest;
+    return this.access;
+  }
+
+  async chooseMore(): Promise<void> {}
+
+  async findRecent(limit: number, offset: number): Promise<LibraryPhoto[]> {
+    return this.photos.slice(offset, offset + limit);
+  }
+
+  async getPhoto(): Promise<PickedPhoto> {
+    return this.picked;
+  }
+}
+
 class SequentialIdGenerator implements IdGenerator {
   private count = 0;
 
@@ -113,6 +164,13 @@ class FixedClock implements Clock {
     return today;
   }
 }
+
+export const pickedPhoto: PickedPhoto = {
+  uri: 'file:///recibo.jpg',
+  fileName: 'recibo.jpg',
+  mimeType: 'image/jpeg',
+  sizeBytes: 100,
+};
 
 export const today = '2026-06-15';
 
@@ -222,6 +280,8 @@ export function createTestContext() {
 
   return {
     ...repositories,
+    attachmentStorage: new InMemoryAttachmentStorage(),
+    photoLibrary: new FakePhotoLibrary(),
     idGenerator,
     clock,
     scheduleWarrantyReminders: new ScheduleWarrantyRemindersUseCase({
