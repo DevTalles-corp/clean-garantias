@@ -1,6 +1,7 @@
 import Animated from 'react-native-reanimated';
 
 import { AppText } from '@/shared/presentation/components/app-text';
+import { Icon } from '@/shared/presentation/components/icon';
 import { useScreenInsets } from '@/shared/presentation/hooks/use-screen-insets';
 import { useTheme } from '@/shared/presentation/hooks/use-theme';
 import { useToastStore } from '@/shared/presentation/stores/toast.store';
@@ -9,6 +10,7 @@ export function Toast() {
   const colors = useTheme();
   const { top } = useScreenInsets();
   const message = useToastStore((state) => state.message);
+  const type = useToastStore((state) => state.type);
   if (!message) return null;
 
   return (
@@ -21,6 +23,9 @@ export function Toast() {
         left: 20,
         right: 20,
         zIndex: 40,
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 10,
         backgroundColor: colors.ink,
         borderRadius: 14,
         paddingVertical: 13,
@@ -33,7 +38,8 @@ export function Toast() {
         animationDuration: 250,
         animationTimingFunction: 'ease-out',
       }}>
-      <AppText style={{ fontSize: 14, color: colors.paper }}>{message}</AppText>
+      <Icon name={type === 'success' ? 'active' : 'info'} color={colors.paper} />
+      <AppText style={{ flex: 1, fontSize: 14, color: colors.paper }}>{message}</AppText>
     </Animated.View>
   );
 }

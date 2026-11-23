@@ -9,7 +9,7 @@ export function useAppMutation<TInput, TOutput>(execute: (input: TInput) => Prom
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: execute,
-    onError: (error) => showToast(toErrorMessage(error)),
+    onError: (error) => showToast(toErrorMessage(error), 'info'),
     // Base local: releer todo es barato y evita vistas desactualizadas, incluso tras un fallo parcial.
     onSettled: () => queryClient.invalidateQueries(),
   });

@@ -37,15 +37,17 @@ export function WarrantyRemindersCard({ warranty }: { warranty: Warranty }) {
 
           function press() {
             if (toggle.isPending) return;
-            if (isPast) return showToast('Esa fecha ya pasó');
+            if (isPast) return showToast('Esa fecha ya pasó', 'info');
             if (!isOn && !settings?.reminderOffsetsDays.includes(offsetDays)) {
-              return showToast(`Activa el aviso de ${offsetDays} días en Ajustes`);
+              return showToast(`Activa el aviso de ${offsetDays} días en Ajustes`, 'info');
             }
             toggle.mutate(
               { offsetDays, current },
               {
                 onSuccess: (reminder) =>
-                  showToast(reminder ? `Aviso programado · ${date}` : 'Aviso cancelado'),
+                  reminder
+                    ? showToast(`Aviso programado · ${date}`)
+                    : showToast('Aviso cancelado', 'info'),
               },
             );
           }

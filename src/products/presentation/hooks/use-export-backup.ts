@@ -25,7 +25,7 @@ export function useExportBackup() {
       );
       if (saved) showToast(`Respaldo exportado · ${purchases.length} compras`);
     } catch {
-      showToast('No se pudo exportar el respaldo');
+      showToast('No se pudo exportar el respaldo', 'info');
     }
   }
 

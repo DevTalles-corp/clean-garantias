@@ -121,7 +121,7 @@ export function SettingsPage() {
             divider
             label="Restaurar respaldo…"
             icon="restore"
-            onPress={() => showToast('Restaurar respaldo estará disponible pronto')}
+            onPress={() => showToast('Restaurar respaldo estará disponible pronto', 'info')}
           />
           <SettingAction
             destructive
