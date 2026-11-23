@@ -1,9 +1,15 @@
 // Punto de composición: único lugar que crea implementaciones e inyecta dependencias.
 // Expone los casos de uso agrupados por módulo; la UI los recibe con UseCasesProvider.
 
+import { ChooseMorePhotosUseCase } from '@/attachments/application/use-cases/choose-more-photos.use-case';
 import { CreateAttachmentUseCase } from '@/attachments/application/use-cases/create-attachment.use-case';
 import { FindAttachmentsByOwnerUseCase } from '@/attachments/application/use-cases/find-attachments-by-owner.use-case';
+import { FindRecentPhotosUseCase } from '@/attachments/application/use-cases/find-recent-photos.use-case';
+import { GetPhotoAccessUseCase } from '@/attachments/application/use-cases/get-photo-access.use-case';
+import { PickPhotoUseCase } from '@/attachments/application/use-cases/pick-photo.use-case';
+import { RequestPhotoAccessUseCase } from '@/attachments/application/use-cases/request-photo-access.use-case';
 import { SqliteAttachmentRepository } from '@/attachments/infrastructure/repositories/sqlite.attachment-repository';
+import { ExpoPhotoLibrary } from '@/attachments/infrastructure/services/expo.photo-library';
 import { FindAllCategoriesUseCase } from '@/categories/application/use-cases/find-all-categories.use-case';
 import { SeedCategoriesUseCase } from '@/categories/application/use-cases/seed-categories.use-case';
 import { SqliteCategoryRepository } from '@/categories/infrastructure/repositories/sqlite.category-repository';
@@ -48,6 +54,7 @@ export async function createApp() {
   //! Servicios
   const clock = new SystemClock();
   const idGenerator = new CryptoIdGenerator();
+  const photoLibrary = new ExpoPhotoLibrary();
 
   //! Casos de uso
   const scheduleWarrantyReminders = new ScheduleWarrantyRemindersUseCase({
@@ -80,6 +87,13 @@ export async function createApp() {
     categories: {
       findAll: new FindAllCategoriesUseCase({ categoryRepository }),
       seed: new SeedCategoriesUseCase({ categoryRepository, idGenerator, clock }),
+    },
+    photos: {
+      chooseMore: new ChooseMorePhotosUseCase({ photoLibrary }),
+      findRecent: new FindRecentPhotosUseCase({ photoLibrary }),
+      getAccess: new GetPhotoAccessUseCase({ photoLibrary }),
+      pick: new PickPhotoUseCase({ photoLibrary }),
+      requestAccess: new RequestPhotoAccessUseCase({ photoLibrary }),
     },
     products: {
       create: new CreateProductUseCase({
