@@ -69,7 +69,7 @@ export function ClaimDocumentSheet(props: Props) {
           <AppText style={styles.attachmentName}>Anexo: {props.receiptName ?? 'sin recibo'}</AppText>
         </View>
       </View>
-      <PrimaryButton label="Compartir PDF" height={52} onPress={share} />
+      <PrimaryButton label="Compartir PDF" icon="share" height={52} onPress={share} />
     </BottomSheet>
   );
 }

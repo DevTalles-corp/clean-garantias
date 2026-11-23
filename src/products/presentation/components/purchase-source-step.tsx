@@ -39,6 +39,7 @@ export function PurchaseSourceStep({ onClose }: { onClose: () => void }) {
       </Pressable>
       <TextButton
         label="Ingresar a mano, sin recibo"
+        icon="edit"
         onPress={() => fillManually(today, defaultMonths)}
         style={styles.manual}
         textStyle={styles.manualText}

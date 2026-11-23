@@ -112,7 +112,13 @@ function ExtendWarrantyForm({ productId, storeName, endDate, hasPolicy, onClose 
         Nuevo vencimiento: {formatDate(addMonths(endDate, months))}
       </AppText>
       {!!error && <AppText style={{ fontSize: 13, color: colors.red }}>{error}</AppText>}
-      <PrimaryButton label="Agregar extensión" height={52} disabled={extend.isPending} onPress={submit} />
+      <PrimaryButton
+        label="Agregar extensión"
+        icon="add"
+        height={52}
+        disabled={extend.isPending}
+        onPress={submit}
+      />
     </>
   );
 }

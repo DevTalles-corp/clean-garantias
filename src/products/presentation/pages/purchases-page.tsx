@@ -79,6 +79,7 @@ export function PurchasesPage() {
         {hasFilters && (
           <TextButton
             label="Limpiar filtros"
+            icon="clearFilters"
             onPress={filters.clearFilters}
             style={{ paddingVertical: 4 }}
             textStyle={styles.clear}
@@ -120,7 +121,7 @@ const useStyles = makeStyles((c) => ({
     color: c.ink,
     outlineWidth: 0,
   },
-  results: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'baseline' },
+  results: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   count: { fontSize: 13, color: c.muted },
   clear: { fontFamily: fonts.sansMedium, fontSize: 13, color: c.green },
 }));

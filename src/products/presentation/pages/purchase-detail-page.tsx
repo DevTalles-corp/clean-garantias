@@ -60,6 +60,7 @@ export function PurchaseDetailPage({ id }: { id: string }) {
         {purchase && (
           <TextButton
             label="Eliminar"
+            icon="delete"
             onPress={confirmDelete}
             style={{ paddingVertical: 8 }}
             textStyle={{ fontSize: 14, color: colors.red }}
@@ -106,7 +107,7 @@ function PurchaseDetail({ purchase }: { purchase: Purchase }) {
         <ReceiptCard productId={product.id} receipt={receipt} storeName={storeName} price={price} />
       )}
       {purchase.finalWarranty && <WarrantyRemindersCard warranty={purchase.finalWarranty} />}
-      <PrimaryButton label="Exportar PDF para reclamo" onPress={() => setOpenSheet('claim')} />
+      <PrimaryButton label="Exportar PDF para reclamo" icon="pdf" onPress={() => setOpenSheet('claim')} />
 
       <ExtendWarrantySheet
         visible={openSheet === 'extend'}

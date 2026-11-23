@@ -172,6 +172,7 @@ export function PurchaseFormStep({ onClose }: { onClose: () => void }) {
         </View>
         <PrimaryButton
           label="Guardar compra"
+          icon="save"
           disabled={register.isPending}
           onPress={save}
           style={{ marginTop: 6 }}

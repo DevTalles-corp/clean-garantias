@@ -63,6 +63,7 @@ export default function RootLayout() {
         <AppText>No se pudo abrir la base de datos.</AppText>
         <TextButton
           label="Reintentar"
+          icon="retry"
           onPress={() => {
             setHasFailed(false);
             setAttempt((current) => current + 1);

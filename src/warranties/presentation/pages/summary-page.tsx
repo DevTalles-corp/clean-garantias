@@ -52,10 +52,12 @@ export function SummaryPage() {
             <SummaryStatCard highlighted value={summary.expiringThisMonth} label="vencen este mes" />
             <SummaryStatCard value={nextReminders.length} label="avisos en los próximos 30 días" />
           </View>
-          <View style={{ flexDirection: 'row', alignItems: 'baseline', justifyContent: 'space-between' }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
             <AppText style={{ fontFamily: fonts.displaySemi, fontSize: 19 }}>Próximos vencimientos</AppText>
             <TextButton
               label="Ver todas"
+              icon="forward"
+              iconPosition="end"
               onPress={() => {
                 setFilters({ status: null });
                 router.navigate('/products');
