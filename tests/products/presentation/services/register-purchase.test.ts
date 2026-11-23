@@ -1,6 +1,8 @@
 import type { AppUseCases } from '@/app.composition';
 import { registerPurchase } from '@/products/presentation/services/register-purchase';
 
+import { pickedPhoto } from '../../../shared/application/test-context';
+
 const input = {
   name: 'TV',
   storeName: ' paris ',
@@ -21,7 +23,7 @@ function createUseCases() {
       create: { execute: jest.fn().mockResolvedValue({ id: 'new-store' }) },
     },
     warranties: { create: { execute: jest.fn().mockResolvedValue({ endDate: '2027-01-01' }) } },
-    attachments: { create: { execute: jest.fn() } },
+    attachments: { attachPhoto: { execute: jest.fn() }, create: { execute: jest.fn() } },
   };
   return { mocks: useCases, useCases: useCases as unknown as AppUseCases };
 }
@@ -52,6 +54,34 @@ describe('registerPurchase', () => {
     const { mocks, useCases } = createUseCases();
     mocks.warranties.create.execute.mockRejectedValue(new Error('falló'));
     await expect(registerPurchase(useCases, input)).rejects.toThrow('falló');
+    expect(mocks.products.delete.execute).toHaveBeenCalledWith('product');
+  });
+
+  test('adjunta la foto elegida en vez del recibo simulado', async () => {
+    const { mocks, useCases } = createUseCases();
+    await registerPurchase(useCases, { ...input, photo: pickedPhoto, receiptFileName: 'recibo.jpg' });
+    expect(mocks.attachments.attachPhoto.execute).toHaveBeenCalledWith({
+      ownerType: 'product',
+      ownerId: 'product',
+      kind: 'receipt',
+      photo: pickedPhoto,
+    });
+    expect(mocks.attachments.create.execute).not.toHaveBeenCalled();
+  });
+
+  test('sin foto conserva el recibo simulado', async () => {
+    const { mocks, useCases } = createUseCases();
+    await registerPurchase(useCases, { ...input, receiptFileName: 'recibo.jpg' });
+    expect(mocks.attachments.attachPhoto.execute).not.toHaveBeenCalled();
+    expect(mocks.attachments.create.execute).toHaveBeenCalledWith(
+      expect.objectContaining({ fileUri: 'simulated://recibo.jpg', sizeBytes: 0 }),
+    );
+  });
+
+  test('si falla la foto borra el producto', async () => {
+    const { mocks, useCases } = createUseCases();
+    mocks.attachments.attachPhoto.execute.mockRejectedValue(new Error('falló'));
+    await expect(registerPurchase(useCases, { ...input, photo: pickedPhoto })).rejects.toThrow('falló');
     expect(mocks.products.delete.execute).toHaveBeenCalledWith('product');
   });
 });

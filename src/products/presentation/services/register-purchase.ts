@@ -2,6 +2,7 @@
 // Si un paso falla, borra el producto para no dejar una compra a medias.
 
 import type { AppUseCases } from '@/app.composition';
+import type { PickedPhoto } from '@/attachments/domain/services/photo-library';
 import type { Product } from '@/products/domain/entities/product.entity';
 import type { IsoDate } from '@/shared/domain/value-objects/iso-date';
 import type { Money } from '@/shared/domain/value-objects/money';
@@ -19,7 +20,8 @@ export interface RegisterPurchaseInput {
   price: Money;
   months: number;
   extensions?: readonly PurchaseExtension[];
-  receiptFileName?: string;
+  photo?: PickedPhoto; // foto real de la galería
+  receiptFileName?: string; // cámara simulada y ejemplos
 }
 
 export async function registerPurchase(
@@ -49,7 +51,14 @@ export async function registerPurchase(
         durationMonths: months,
       });
     }
-    if (input.receiptFileName) {
+    if (input.photo) {
+      await useCases.attachments.attachPhoto.execute({
+        ownerType: 'product',
+        ownerId: product.id,
+        kind: 'receipt',
+        photo: input.photo,
+      });
+    } else if (input.receiptFileName) {
       await attachSimulatedReceipt(useCases, product.id, input.receiptFileName);
     }
     return { product, warranty };
@@ -59,7 +68,7 @@ export async function registerPurchase(
   }
 }
 
-// Recibo simulado, como en el prototipo: aún no hay cámara ni archivo real.
+// Recibo simulado, como en el prototipo: aún no hay cámara real.
 export async function attachSimulatedReceipt(
   useCases: AppUseCases,
   productId: string,

@@ -2,6 +2,7 @@
 
 import { create } from 'zustand';
 
+import type { PickedPhoto } from '@/attachments/domain/services/photo-library';
 import { mockReceipts, type MockReceipt } from '@/products/presentation/constants/mock-receipts';
 import type {
   PurchaseField,
@@ -15,6 +16,7 @@ export type PurchaseStep = 'source' | 'camera' | 'gallery' | 'reading' | 'form';
 interface PurchaseDraftState {
   step: PurchaseStep;
   receipt: MockReceipt;
+  photo: PickedPhoto | null;
   form: PurchaseForm;
   detected: readonly PurchaseField[];
   errors: PurchaseFormErrors;
@@ -23,6 +25,8 @@ interface PurchaseDraftState {
   read: (receipt: MockReceipt) => void;
   fillFromReceipt: (months: number) => void;
   fillManually: (today: IsoDate, months: number) => void;
+  fillFromPhoto: (photo: PickedPhoto, today: IsoDate, months: number) => void;
+  removePhoto: () => void;
   setField: <K extends PurchaseField>(field: K, value: PurchaseForm[K]) => void;
   setErrors: (errors: PurchaseFormErrors) => void;
 }
@@ -40,6 +44,7 @@ const emptyForm: PurchaseForm = {
 const initial = {
   step: 'source' as PurchaseStep,
   receipt: mockReceipts[0],
+  photo: null as PickedPhoto | null,
   form: emptyForm,
   detected: [] as readonly PurchaseField[],
   errors: {} as PurchaseFormErrors,
@@ -53,6 +58,7 @@ export const usePurchaseDraftStore = create<PurchaseDraftState>((set) => ({
   fillFromReceipt: (months) =>
     set(({ receipt }) => ({
       step: 'form',
+      photo: null,
       form: {
         ...emptyForm,
         store: receipt.store[0] + receipt.store.slice(1).toLowerCase(),
@@ -65,7 +71,10 @@ export const usePurchaseDraftStore = create<PurchaseDraftState>((set) => ({
       errors: {},
     })),
   fillManually: (today, months) =>
-    set({ step: 'form', form: { ...emptyForm, date: today, months }, detected: [], errors: {} }),
+    set({ step: 'form', photo: null, form: { ...emptyForm, date: today, months }, detected: [], errors: {} }),
+  fillFromPhoto: (photo, today, months) =>
+    set({ step: 'form', photo, form: { ...emptyForm, date: today, months }, detected: [], errors: {} }),
+  removePhoto: () => set({ photo: null }),
   setField: (field, value) =>
     set(({ form, detected, errors }) => ({
       form: { ...form, [field]: value },
