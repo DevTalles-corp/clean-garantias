@@ -1,6 +1,6 @@
 # SPEC 01 — Iconografía unificada y navbar solo con iconos
 
-> **Status:** Aprobado
+> **Status:** Implementado
 > **Depends on:** —
 > **Date:** 2026-11-23
 > **Objective:** Unificar la iconografía de la app con `expo-symbols`, dejar el navbar solo con iconos y acompañar con iconos las acciones, ajustes, estados y campos.
@@ -142,20 +142,20 @@ Convenciones:
 
 ## Acceptance criteria
 
-- [ ] El navbar no muestra texto; sus tres pestañas y el botón `+` muestran icono.
-- [ ] Las pestañas exponen «Resumen», «Compras» y «Ajustes», y el botón `+` expone «Nueva compra», como nombre accesible.
-- [ ] La pestaña activa conserva el fondo oscuro y la navegación funciona.
-- [ ] `grep -rnE "◐|≡|⚙|✕|●|→" src --include="*.tsx"` no devuelve símbolos dibujados en la interfaz.
-- [ ] Los botones del stepper y «Extender garantía» no usan `−` ni `+` como texto.
-- [ ] `SymbolView` solo se importa en `icon.tsx`; no quedan usos de `SearchIcon`, `BackIcon`, `categoryCode` ni `fonts.symbol`.
-- [ ] Cada compra muestra el icono de su categoría en color neutro y ninguna muestra un código de tres letras.
-- [ ] Una categoría con un icono desconocido muestra `categoryOther`.
-- [ ] Todos los elementos listados en «In» muestran el icono del catálogo y los botones con texto lo conservan.
-- [ ] Las dos tarjetas de estadística muestran el icono arriba a la derecha, en la línea del número.
-- [ ] Un toast de éxito muestra `active`; uno de fallo o aviso muestra `info`.
-- [ ] `npx tsc --noEmit`, `npx expo lint` y `npm test` terminan sin errores.
-- [ ] En web, las capturas de Resumen, Compras, Ajustes, detalle y nueva compra, en tema claro y oscuro y guardadas en `playwright/`, muestran todos los iconos sin recortes.
-- [ ] En el simulador iOS, esas mismas pantallas no muestran huecos en lugar de iconos.
+- [x] El navbar no muestra texto; sus tres pestañas y el botón `+` muestran icono.
+- [x] Las pestañas exponen «Resumen», «Compras» y «Ajustes», y el botón `+` expone «Nueva compra», como nombre accesible.
+- [x] La pestaña activa conserva el fondo oscuro y la navegación funciona.
+- [x] `grep -rnE "◐|≡|⚙|✕|●|→" src --include="*.tsx"` no devuelve símbolos dibujados en la interfaz.
+- [x] Los botones del stepper y «Extender garantía» no usan `−` ni `+` como texto.
+- [x] `SymbolView` solo se importa en `icon.tsx`; no quedan usos de `SearchIcon`, `BackIcon`, `categoryCode` ni `fonts.symbol`.
+- [x] Cada compra muestra el icono de su categoría en color neutro y ninguna muestra un código de tres letras.
+- [x] Una categoría con un icono desconocido muestra `categoryOther`.
+- [x] Todos los elementos listados en «In» muestran el icono del catálogo y los botones con texto lo conservan.
+- [x] Las dos tarjetas de estadística muestran el icono arriba a la derecha, en la línea del número.
+- [x] Un toast de éxito muestra `active`; uno de fallo o aviso muestra `info`.
+- [x] `npx tsc --noEmit`, `npx expo lint` y `npm test` terminan sin errores.
+- [x] En web, las capturas de Resumen, Compras, Ajustes, detalle y nueva compra, en tema claro y oscuro y guardadas en `playwright/`, muestran todos los iconos sin recortes.
+- [x] En el simulador iOS, esas mismas pantallas no muestran huecos en lugar de iconos.
 
 ## Decisions
 
