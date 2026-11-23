@@ -49,8 +49,8 @@ export function SummaryPage() {
         <>
           <ProtectedMoneyCard summary={summary} />
           <View style={{ flexDirection: 'row', gap: 10 }}>
-            <SummaryStatCard highlighted value={summary.expiringThisMonth} label="vencen este mes" />
-            <SummaryStatCard value={nextReminders.length} label="avisos en los próximos 30 días" />
+            <SummaryStatCard highlighted icon="calendar" value={summary.expiringThisMonth} label="vencen este mes" />
+            <SummaryStatCard icon="bell" value={nextReminders.length} label="avisos en los próximos 30 días" />
           </View>
           <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
             <AppText style={{ fontFamily: fonts.displaySemi, fontSize: 19 }}>Próximos vencimientos</AppText>
