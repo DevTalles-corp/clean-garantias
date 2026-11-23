@@ -9,18 +9,25 @@ import { NotFoundError } from '@/shared/domain/errors/domain.errors';
 import { Warranty } from '@/warranties/domain/entities/warranty.entity';
 import type { WarrantyRepository } from '@/warranties/domain/repositories/warranty.repository';
 
+export interface DeleteWarrantyDependencies {
+  warrantyRepository: WarrantyRepository;
+  reminderRepository: ReminderRepository;
+  claimRepository: ClaimRepository;
+  attachmentRepository: AttachmentRepository;
+}
+
 export class DeleteWarrantyUseCase {
   private readonly warrantyRepository: WarrantyRepository;
   private readonly reminderRepository: ReminderRepository;
   private readonly claimRepository: ClaimRepository;
   private readonly attachmentRepository: AttachmentRepository;
 
-  constructor(
-    warrantyRepository: WarrantyRepository,
-    reminderRepository: ReminderRepository,
-    claimRepository: ClaimRepository,
-    attachmentRepository: AttachmentRepository,
-  ) {
+  constructor({
+    warrantyRepository,
+    reminderRepository,
+    claimRepository,
+    attachmentRepository,
+  }: DeleteWarrantyDependencies) {
     this.warrantyRepository = warrantyRepository;
     this.reminderRepository = reminderRepository;
     this.claimRepository = claimRepository;

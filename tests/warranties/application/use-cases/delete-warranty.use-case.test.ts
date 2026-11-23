@@ -19,12 +19,12 @@ describe('DeleteWarrantyUseCase', () => {
 
   beforeEach(async () => {
     context = await createSeededContext();
-    useCase = new DeleteWarrantyUseCase(
-      context.warranties,
-      context.reminders,
-      context.claims,
-      context.attachments,
-    );
+    useCase = new DeleteWarrantyUseCase({
+      warrantyRepository: context.warranties,
+      reminderRepository: context.reminders,
+      claimRepository: context.claims,
+      attachmentRepository: context.attachments,
+    });
   });
 
   test('borra la garantía con sus recordatorios, reclamos y adjuntos', async () => {

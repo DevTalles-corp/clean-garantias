@@ -5,15 +5,19 @@ import { Category } from '@/categories/domain/entities/category.entity';
 import type { CategoryRepository } from '@/categories/domain/repositories/category.repository';
 import { NotFoundError } from '@/shared/domain/errors/domain.errors';
 
-export class FindCategoryByIdUseCase {
-  private readonly repository: CategoryRepository;
+export interface FindCategoryByIdDependencies {
+  categoryRepository: CategoryRepository;
+}
 
-  constructor(repository: CategoryRepository) {
-    this.repository = repository;
+export class FindCategoryByIdUseCase {
+  private readonly categoryRepository: CategoryRepository;
+
+  constructor({ categoryRepository }: FindCategoryByIdDependencies) {
+    this.categoryRepository = categoryRepository;
   }
 
   async execute(id: string): Promise<Category> {
-    const category = await this.repository.findById(Category.normalizeId(id));
+    const category = await this.categoryRepository.findById(Category.normalizeId(id));
     if (!category) throw new NotFoundError('Categoría no encontrada.');
     return category;
   }

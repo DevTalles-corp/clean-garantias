@@ -15,7 +15,7 @@ describe('FindClaimByIdUseCase', () => {
 
   beforeEach(async () => {
     context = await createSeededContext();
-    useCase = new FindClaimByIdUseCase(context.claims);
+    useCase = new FindClaimByIdUseCase({ claimRepository: context.claims });
   });
 
   test.each([ids.claim, `  ${ids.claim.toUpperCase()}  `])('devuelve la entidad con el id %p', async (id) => {

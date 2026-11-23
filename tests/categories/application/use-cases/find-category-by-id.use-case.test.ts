@@ -15,7 +15,9 @@ describe('FindCategoryByIdUseCase', () => {
 
   beforeEach(async () => {
     context = await createSeededContext();
-    useCase = new FindCategoryByIdUseCase(context.categories);
+    useCase = new FindCategoryByIdUseCase({
+      categoryRepository: context.categories,
+    });
   });
 
   test.each([ids.category, `  ${ids.category.toUpperCase()}  `])('devuelve la entidad con el id %p', async (id) => {

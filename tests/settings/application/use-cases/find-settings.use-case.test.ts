@@ -14,7 +14,9 @@ describe('FindSettingsUseCase', () => {
 
   beforeEach(async () => {
     context = await createSeededContext();
-    useCase = new FindSettingsUseCase(context.settings);
+    useCase = new FindSettingsUseCase({
+      settingsRepository: context.settings,
+    });
   });
 
   test('devuelve la configuración guardada', async () => {
@@ -22,7 +24,9 @@ describe('FindSettingsUseCase', () => {
   });
 
   test('lanza NotFoundError si no hay configuración', async () => {
-    await expect(new FindSettingsUseCase(createTestContext().settings).execute()).rejects.toThrow(
+    await expect(new FindSettingsUseCase({
+      settingsRepository: createTestContext().settings,
+    }).execute()).rejects.toThrow(
       notFoundError('Configuración no encontrada.'),
     );
   });

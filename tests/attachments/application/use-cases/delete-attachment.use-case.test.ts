@@ -14,7 +14,9 @@ describe('DeleteAttachmentUseCase', () => {
 
   beforeEach(async () => {
     context = await createSeededContext();
-    useCase = new DeleteAttachmentUseCase(context.attachments);
+    useCase = new DeleteAttachmentUseCase({
+      attachmentRepository: context.attachments,
+    });
   });
 
   test('borra el adjunto', async () => {

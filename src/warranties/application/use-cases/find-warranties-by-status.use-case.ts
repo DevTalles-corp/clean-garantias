@@ -7,16 +7,22 @@ import type { Clock } from '@/shared/domain/services/clock';
 import { getWarrantyStatus, type Warranty, type WarrantyStatus } from '@/warranties/domain/entities/warranty.entity';
 import type { WarrantyRepository } from '@/warranties/domain/repositories/warranty.repository';
 
+export interface FindWarrantiesByStatusDependencies {
+  warrantyRepository: WarrantyRepository;
+  settingsRepository: SettingsRepository;
+  clock: Clock;
+}
+
 export class FindWarrantiesByStatusUseCase {
   private readonly warrantyRepository: WarrantyRepository;
   private readonly settingsRepository: SettingsRepository;
   private readonly clock: Clock;
 
-  constructor(
-    warrantyRepository: WarrantyRepository,
-    settingsRepository: SettingsRepository,
-    clock: Clock,
-  ) {
+  constructor({
+    warrantyRepository,
+    settingsRepository,
+    clock,
+  }: FindWarrantiesByStatusDependencies) {
     this.warrantyRepository = warrantyRepository;
     this.settingsRepository = settingsRepository;
     this.clock = clock;

@@ -6,14 +6,19 @@ import { Claim } from '@/claims/domain/entities/claim.entity';
 import type { ClaimRepository } from '@/claims/domain/repositories/claim.repository';
 import { NotFoundError } from '@/shared/domain/errors/domain.errors';
 
+export interface DeleteClaimDependencies {
+  claimRepository: ClaimRepository;
+  attachmentRepository: AttachmentRepository;
+}
+
 export class DeleteClaimUseCase {
   private readonly claimRepository: ClaimRepository;
   private readonly attachmentRepository: AttachmentRepository;
 
-  constructor(
-    claimRepository: ClaimRepository,
-    attachmentRepository: AttachmentRepository,
-  ) {
+  constructor({
+    claimRepository,
+    attachmentRepository,
+  }: DeleteClaimDependencies) {
     this.claimRepository = claimRepository;
     this.attachmentRepository = attachmentRepository;
   }

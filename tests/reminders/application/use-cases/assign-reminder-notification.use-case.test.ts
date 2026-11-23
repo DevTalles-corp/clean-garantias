@@ -16,7 +16,9 @@ describe('AssignReminderNotificationUseCase', () => {
 
   beforeEach(async () => {
     context = await createSeededContext();
-    useCase = new AssignReminderNotificationUseCase(context.reminders);
+    useCase = new AssignReminderNotificationUseCase({
+      reminderRepository: context.reminders,
+    });
   });
 
   test('actualiza y guarda el recordatorio', async () => {

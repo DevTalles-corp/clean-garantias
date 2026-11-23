@@ -5,14 +5,18 @@ import type { Claim } from '@/claims/domain/entities/claim.entity';
 import type { ClaimRepository } from '@/claims/domain/repositories/claim.repository';
 import { Warranty } from '@/warranties/domain/entities/warranty.entity';
 
-export class FindClaimsByWarrantyUseCase {
-  private readonly repository: ClaimRepository;
+export interface FindClaimsByWarrantyDependencies {
+  claimRepository: ClaimRepository;
+}
 
-  constructor(repository: ClaimRepository) {
-    this.repository = repository;
+export class FindClaimsByWarrantyUseCase {
+  private readonly claimRepository: ClaimRepository;
+
+  constructor({ claimRepository }: FindClaimsByWarrantyDependencies) {
+    this.claimRepository = claimRepository;
   }
 
   async execute(warrantyId: string): Promise<Claim[]> {
-    return this.repository.findByWarrantyId(Warranty.normalizeId(warrantyId));
+    return this.claimRepository.findByWarrantyId(Warranty.normalizeId(warrantyId));
   }
 }

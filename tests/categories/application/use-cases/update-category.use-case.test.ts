@@ -19,7 +19,9 @@ describe('UpdateCategoryUseCase', () => {
 
   beforeEach(async () => {
     context = await createSeededContext();
-    useCase = new UpdateCategoryUseCase(context.categories);
+    useCase = new UpdateCategoryUseCase({
+      categoryRepository: context.categories,
+    });
   });
 
   test('actualiza, guarda y conserva los demás datos', async () => {

@@ -14,7 +14,9 @@ describe('FindProductsByStoreUseCase', () => {
 
   beforeEach(async () => {
     context = await createSeededContext();
-    useCase = new FindProductsByStoreUseCase(context.products);
+    useCase = new FindProductsByStoreUseCase({
+      productRepository: context.products,
+    });
   });
 
   test('normaliza el id y devuelve los registros relacionados', async () => {

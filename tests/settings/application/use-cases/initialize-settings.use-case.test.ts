@@ -15,7 +15,9 @@ describe('InitializeSettingsUseCase', () => {
 
   beforeEach(async () => {
     context = await createSeededContext();
-    useCase = new InitializeSettingsUseCase(context.settings);
+    useCase = new InitializeSettingsUseCase({
+      settingsRepository: context.settings,
+    });
   });
 
   test('conserva la configuración existente', async () => {
@@ -25,7 +27,7 @@ describe('InitializeSettingsUseCase', () => {
   test('guarda la configuración inicial si no existe', async () => {
     const { settings } = createTestContext();
 
-    const created = await new InitializeSettingsUseCase(settings).execute(settingsData);
+    const created = await new InitializeSettingsUseCase({ settingsRepository: settings }).execute(settingsData);
 
     expect({ ...created }).toEqual(settingsData);
     expect(await settings.find()).toBe(created);
@@ -35,7 +37,9 @@ describe('InitializeSettingsUseCase', () => {
     const { settings } = createTestContext();
 
     await expect(
-      new InitializeSettingsUseCase(settings).execute({ ...settingsData, locale: '' }),
+      new InitializeSettingsUseCase({
+        settingsRepository: settings,
+      }).execute({ ...settingsData, locale: '' }),
     ).rejects.toThrow(validationError('El idioma es obligatorio.'));
     expect(await settings.find()).toBeUndefined();
   });

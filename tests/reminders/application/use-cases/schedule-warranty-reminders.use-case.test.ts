@@ -19,13 +19,13 @@ describe('ScheduleWarrantyRemindersUseCase', () => {
 
   beforeEach(async () => {
     context = await createSeededContext();
-    useCase = new ScheduleWarrantyRemindersUseCase(
-      context.reminders,
-      context.warranties,
-      context.settings,
-      context.idGenerator,
-      context.clock,
-    );
+    useCase = new ScheduleWarrantyRemindersUseCase({
+      reminderRepository: context.reminders,
+      warrantyRepository: context.warranties,
+      settingsRepository: context.settings,
+      idGenerator: context.idGenerator,
+      clock: context.clock,
+    });
   });
 
   test('normaliza el id, conserva el vigente y crea el que falta', async () => {

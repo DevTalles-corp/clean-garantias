@@ -5,15 +5,19 @@ import { Claim } from '@/claims/domain/entities/claim.entity';
 import type { ClaimRepository } from '@/claims/domain/repositories/claim.repository';
 import { NotFoundError } from '@/shared/domain/errors/domain.errors';
 
-export class FindClaimByIdUseCase {
-  private readonly repository: ClaimRepository;
+export interface FindClaimByIdDependencies {
+  claimRepository: ClaimRepository;
+}
 
-  constructor(repository: ClaimRepository) {
-    this.repository = repository;
+export class FindClaimByIdUseCase {
+  private readonly claimRepository: ClaimRepository;
+
+  constructor({ claimRepository }: FindClaimByIdDependencies) {
+    this.claimRepository = claimRepository;
   }
 
   async execute(id: string): Promise<Claim> {
-    const claim = await this.repository.findById(Claim.normalizeId(id));
+    const claim = await this.claimRepository.findById(Claim.normalizeId(id));
     if (!claim) throw new NotFoundError('Reclamo no encontrado.');
     return claim;
   }

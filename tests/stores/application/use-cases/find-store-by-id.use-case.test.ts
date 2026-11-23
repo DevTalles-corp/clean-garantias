@@ -15,7 +15,7 @@ describe('FindStoreByIdUseCase', () => {
 
   beforeEach(async () => {
     context = await createSeededContext();
-    useCase = new FindStoreByIdUseCase(context.stores);
+    useCase = new FindStoreByIdUseCase({ storeRepository: context.stores });
   });
 
   test.each([ids.store, `  ${ids.store.toUpperCase()}  `])('devuelve la entidad con el id %p', async (id) => {

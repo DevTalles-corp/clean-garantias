@@ -5,15 +5,19 @@ import { NotFoundError } from '@/shared/domain/errors/domain.errors';
 import { Store } from '@/stores/domain/entities/store.entity';
 import type { StoreRepository } from '@/stores/domain/repositories/store.repository';
 
-export class FindStoreByIdUseCase {
-  private readonly repository: StoreRepository;
+export interface FindStoreByIdDependencies {
+  storeRepository: StoreRepository;
+}
 
-  constructor(repository: StoreRepository) {
-    this.repository = repository;
+export class FindStoreByIdUseCase {
+  private readonly storeRepository: StoreRepository;
+
+  constructor({ storeRepository }: FindStoreByIdDependencies) {
+    this.storeRepository = storeRepository;
   }
 
   async execute(id: string): Promise<Store> {
-    const store = await this.repository.findById(Store.normalizeId(id));
+    const store = await this.storeRepository.findById(Store.normalizeId(id));
     if (!store) throw new NotFoundError('Tienda no encontrada.');
     return store;
   }

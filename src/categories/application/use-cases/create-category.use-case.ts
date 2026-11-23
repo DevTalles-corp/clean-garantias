@@ -6,13 +6,23 @@ import type { CategoryRepository } from '@/categories/domain/repositories/catego
 import type { Clock } from '@/shared/domain/services/clock';
 import type { IdGenerator } from '@/shared/domain/services/id-generator';
 
+export interface CreateCategoryDependencies {
+  categoryRepository: CategoryRepository;
+  idGenerator: IdGenerator;
+  clock: Clock;
+}
+
 export class CreateCategoryUseCase {
-  private readonly repository: CategoryRepository;
+  private readonly categoryRepository: CategoryRepository;
   private readonly idGenerator: IdGenerator;
   private readonly clock: Clock;
 
-  constructor(repository: CategoryRepository, idGenerator: IdGenerator, clock: Clock) {
-    this.repository = repository;
+  constructor({
+    categoryRepository,
+    idGenerator,
+    clock,
+  }: CreateCategoryDependencies) {
+    this.categoryRepository = categoryRepository;
     this.idGenerator = idGenerator;
     this.clock = clock;
   }
@@ -25,7 +35,7 @@ export class CreateCategoryUseCase {
       createdAt: this.clock.today(),
     });
 
-    await this.repository.save(category);
+    await this.categoryRepository.save(category);
     return category;
   }
 }

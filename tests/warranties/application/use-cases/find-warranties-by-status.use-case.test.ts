@@ -20,11 +20,11 @@ describe('FindWarrantiesByStatusUseCase', () => {
 
   beforeEach(async () => {
     context = await createSeededContext();
-    useCase = new FindWarrantiesByStatusUseCase(
-      context.warranties,
-      context.settings,
-      context.clock,
-    );
+    useCase = new FindWarrantiesByStatusUseCase({
+      warrantyRepository: context.warranties,
+      settingsRepository: context.settings,
+      clock: context.clock,
+    });
   });
 
   beforeEach(async () => {
@@ -55,7 +55,11 @@ describe('FindWarrantiesByStatusUseCase', () => {
     const { warranties, settings, clock } = createTestContext();
 
     await expect(
-      new FindWarrantiesByStatusUseCase(warranties, settings, clock).execute('active'),
+      new FindWarrantiesByStatusUseCase({
+        warrantyRepository: warranties,
+        settingsRepository: settings,
+        clock,
+      }).execute('active'),
     ).rejects.toThrow(notFoundError('Configuración no encontrada.'));
   });
 });

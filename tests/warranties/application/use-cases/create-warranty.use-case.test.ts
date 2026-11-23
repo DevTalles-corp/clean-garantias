@@ -25,13 +25,13 @@ describe('CreateWarrantyUseCase', () => {
 
   beforeEach(async () => {
     context = await createSeededContext();
-    useCase = new CreateWarrantyUseCase(
-      context.warranties,
-      context.products,
-      context.scheduleWarrantyReminders,
-      context.idGenerator,
-      context.clock,
-    );
+    useCase = new CreateWarrantyUseCase({
+      warrantyRepository: context.warranties,
+      productRepository: context.products,
+      scheduleWarrantyReminders: context.scheduleWarrantyReminders,
+      idGenerator: context.idGenerator,
+      clock: context.clock,
+    });
   });
 
   test('crea, guarda y devuelve la entidad con id y fecha inyectados', async () => {

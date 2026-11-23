@@ -15,11 +15,11 @@ describe('SetWarrantyArchivedUseCase', () => {
 
   beforeEach(async () => {
     context = await createSeededContext();
-    useCase = new SetWarrantyArchivedUseCase(
-      context.warranties,
-      context.scheduleWarrantyReminders,
-      context.clock,
-    );
+    useCase = new SetWarrantyArchivedUseCase({
+      warrantyRepository: context.warranties,
+      scheduleWarrantyReminders: context.scheduleWarrantyReminders,
+      clock: context.clock,
+    });
   });
 
   test('archiva la garantía y cancela sus recordatorios', async () => {

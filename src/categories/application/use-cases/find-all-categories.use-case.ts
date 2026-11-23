@@ -4,14 +4,18 @@
 import type { Category } from '@/categories/domain/entities/category.entity';
 import type { CategoryRepository } from '@/categories/domain/repositories/category.repository';
 
-export class FindAllCategoriesUseCase {
-  private readonly repository: CategoryRepository;
+export interface FindAllCategoriesDependencies {
+  categoryRepository: CategoryRepository;
+}
 
-  constructor(repository: CategoryRepository) {
-    this.repository = repository;
+export class FindAllCategoriesUseCase {
+  private readonly categoryRepository: CategoryRepository;
+
+  constructor({ categoryRepository }: FindAllCategoriesDependencies) {
+    this.categoryRepository = categoryRepository;
   }
 
   async execute(): Promise<Category[]> {
-    return this.repository.findAll();
+    return this.categoryRepository.findAll();
   }
 }

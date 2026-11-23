@@ -23,11 +23,11 @@ describe('CreateCategoryUseCase', () => {
 
   beforeEach(async () => {
     context = await createSeededContext();
-    useCase = new CreateCategoryUseCase(
-      context.categories,
-      context.idGenerator,
-      context.clock,
-    );
+    useCase = new CreateCategoryUseCase({
+      categoryRepository: context.categories,
+      idGenerator: context.idGenerator,
+      clock: context.clock,
+    });
   });
 
   test('crea, guarda y devuelve la entidad con id y fecha inyectados', async () => {

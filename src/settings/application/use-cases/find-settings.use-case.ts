@@ -5,15 +5,19 @@ import type { Settings } from '@/settings/domain/entities/settings.entity';
 import type { SettingsRepository } from '@/settings/domain/repositories/settings.repository';
 import { NotFoundError } from '@/shared/domain/errors/domain.errors';
 
-export class FindSettingsUseCase {
-  private readonly repository: SettingsRepository;
+export interface FindSettingsDependencies {
+  settingsRepository: SettingsRepository;
+}
 
-  constructor(repository: SettingsRepository) {
-    this.repository = repository;
+export class FindSettingsUseCase {
+  private readonly settingsRepository: SettingsRepository;
+
+  constructor({ settingsRepository }: FindSettingsDependencies) {
+    this.settingsRepository = settingsRepository;
   }
 
   async execute(): Promise<Settings> {
-    const settings = await this.repository.find();
+    const settings = await this.settingsRepository.find();
     if (!settings) throw new NotFoundError('Configuración no encontrada.');
     return settings;
   }

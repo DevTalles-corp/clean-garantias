@@ -5,15 +5,19 @@ import { Category, type CreateCategoryData } from '@/categories/domain/entities/
 import type { CategoryRepository } from '@/categories/domain/repositories/category.repository';
 import { ConflictError, NotFoundError } from '@/shared/domain/errors/domain.errors';
 
-export class UpdateCategoryUseCase {
-  private readonly repository: CategoryRepository;
+export interface UpdateCategoryDependencies {
+  categoryRepository: CategoryRepository;
+}
 
-  constructor(repository: CategoryRepository) {
-    this.repository = repository;
+export class UpdateCategoryUseCase {
+  private readonly categoryRepository: CategoryRepository;
+
+  constructor({ categoryRepository }: UpdateCategoryDependencies) {
+    this.categoryRepository = categoryRepository;
   }
 
   async execute(id: string, changes: Partial<CreateCategoryData>): Promise<Category> {
-    const current = await this.repository.findById(Category.normalizeId(id));
+    const current = await this.categoryRepository.findById(Category.normalizeId(id));
     if (!current) throw new NotFoundError('Categoría no encontrada.');
     if (current.isSystem) {
       throw new ConflictError('No se puede modificar una categoría del sistema.');
@@ -27,7 +31,7 @@ export class UpdateCategoryUseCase {
       createdAt: current.createdAt,
     });
 
-    await this.repository.save(category);
+    await this.categoryRepository.save(category);
     return category;
   }
 }

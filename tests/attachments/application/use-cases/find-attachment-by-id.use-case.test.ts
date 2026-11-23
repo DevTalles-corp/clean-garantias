@@ -15,7 +15,9 @@ describe('FindAttachmentByIdUseCase', () => {
 
   beforeEach(async () => {
     context = await createSeededContext();
-    useCase = new FindAttachmentByIdUseCase(context.attachments);
+    useCase = new FindAttachmentByIdUseCase({
+      attachmentRepository: context.attachments,
+    });
   });
 
   test.each([ids.attachment, `  ${ids.attachment.toUpperCase()}  `])('devuelve la entidad con el id %p', async (id) => {

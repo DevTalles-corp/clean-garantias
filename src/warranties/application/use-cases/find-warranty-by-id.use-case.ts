@@ -5,15 +5,19 @@ import { NotFoundError } from '@/shared/domain/errors/domain.errors';
 import { Warranty } from '@/warranties/domain/entities/warranty.entity';
 import type { WarrantyRepository } from '@/warranties/domain/repositories/warranty.repository';
 
-export class FindWarrantyByIdUseCase {
-  private readonly repository: WarrantyRepository;
+export interface FindWarrantyByIdDependencies {
+  warrantyRepository: WarrantyRepository;
+}
 
-  constructor(repository: WarrantyRepository) {
-    this.repository = repository;
+export class FindWarrantyByIdUseCase {
+  private readonly warrantyRepository: WarrantyRepository;
+
+  constructor({ warrantyRepository }: FindWarrantyByIdDependencies) {
+    this.warrantyRepository = warrantyRepository;
   }
 
   async execute(id: string): Promise<Warranty> {
-    const warranty = await this.repository.findById(Warranty.normalizeId(id));
+    const warranty = await this.warrantyRepository.findById(Warranty.normalizeId(id));
     if (!warranty) throw new NotFoundError('Garantía no encontrada.');
     return warranty;
   }

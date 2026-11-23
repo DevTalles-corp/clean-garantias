@@ -13,7 +13,9 @@ describe('FindAllProductsUseCase', () => {
 
   beforeEach(async () => {
     context = await createSeededContext();
-    useCase = new FindAllProductsUseCase(context.products);
+    useCase = new FindAllProductsUseCase({
+      productRepository: context.products,
+    });
   });
 
   test('devuelve todos los registros', async () => {

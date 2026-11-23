@@ -22,11 +22,11 @@ describe('SeedCategoriesUseCase', () => {
 
   beforeEach(async () => {
     context = await createSeededContext();
-    useCase = new SeedCategoriesUseCase(
-      context.categories,
-      context.idGenerator,
-      context.clock,
-    );
+    useCase = new SeedCategoriesUseCase({
+      categoryRepository: context.categories,
+      idGenerator: context.idGenerator,
+      clock: context.clock,
+    });
   });
 
   test('guarda las categorías que faltan como categorías del sistema', async () => {

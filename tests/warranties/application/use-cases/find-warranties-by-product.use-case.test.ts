@@ -14,7 +14,9 @@ describe('FindWarrantiesByProductUseCase', () => {
 
   beforeEach(async () => {
     context = await createSeededContext();
-    useCase = new FindWarrantiesByProductUseCase(context.warranties);
+    useCase = new FindWarrantiesByProductUseCase({
+      warrantyRepository: context.warranties,
+    });
   });
 
   test('normaliza el id y devuelve los registros relacionados', async () => {

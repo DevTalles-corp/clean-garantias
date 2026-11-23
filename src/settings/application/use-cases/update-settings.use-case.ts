@@ -7,16 +7,22 @@ import type { SettingsRepository } from '@/settings/domain/repositories/settings
 import { NotFoundError } from '@/shared/domain/errors/domain.errors';
 import type { WarrantyRepository } from '@/warranties/domain/repositories/warranty.repository';
 
+export interface UpdateSettingsDependencies {
+  settingsRepository: SettingsRepository;
+  warrantyRepository: WarrantyRepository;
+  scheduleWarrantyReminders: ScheduleWarrantyRemindersUseCase;
+}
+
 export class UpdateSettingsUseCase {
   private readonly settingsRepository: SettingsRepository;
   private readonly warrantyRepository: WarrantyRepository;
   private readonly scheduleWarrantyReminders: ScheduleWarrantyRemindersUseCase;
 
-  constructor(
-    settingsRepository: SettingsRepository,
-    warrantyRepository: WarrantyRepository,
-    scheduleWarrantyReminders: ScheduleWarrantyRemindersUseCase,
-  ) {
+  constructor({
+    settingsRepository,
+    warrantyRepository,
+    scheduleWarrantyReminders,
+  }: UpdateSettingsDependencies) {
     this.settingsRepository = settingsRepository;
     this.warrantyRepository = warrantyRepository;
     this.scheduleWarrantyReminders = scheduleWarrantyReminders;

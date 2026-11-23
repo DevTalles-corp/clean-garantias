@@ -16,7 +16,10 @@ describe('DeleteStoreUseCase', () => {
 
   beforeEach(async () => {
     context = await createSeededContext();
-    useCase = new DeleteStoreUseCase(context.stores, context.products);
+    useCase = new DeleteStoreUseCase({
+      storeRepository: context.stores,
+      productRepository: context.products,
+    });
   });
 
   test('borra el registro si no está en uso', async () => {

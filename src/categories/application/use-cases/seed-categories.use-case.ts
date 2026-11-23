@@ -6,13 +6,23 @@ import type { CategoryRepository } from '@/categories/domain/repositories/catego
 import type { Clock } from '@/shared/domain/services/clock';
 import type { IdGenerator } from '@/shared/domain/services/id-generator';
 
+export interface SeedCategoriesDependencies {
+  categoryRepository: CategoryRepository;
+  idGenerator: IdGenerator;
+  clock: Clock;
+}
+
 export class SeedCategoriesUseCase {
-  private readonly repository: CategoryRepository;
+  private readonly categoryRepository: CategoryRepository;
   private readonly idGenerator: IdGenerator;
   private readonly clock: Clock;
 
-  constructor(repository: CategoryRepository, idGenerator: IdGenerator, clock: Clock) {
-    this.repository = repository;
+  constructor({
+    categoryRepository,
+    idGenerator,
+    clock,
+  }: SeedCategoriesDependencies) {
+    this.categoryRepository = categoryRepository;
     this.idGenerator = idGenerator;
     this.clock = clock;
   }
@@ -29,14 +39,14 @@ export class SeedCategoriesUseCase {
     );
 
     // Compara por nombre: una semilla interrumpida se completa en el siguiente arranque.
-    const existing = await this.repository.findAll();
+    const existing = await this.categoryRepository.findAll();
     const names = new Set(
       existing.filter((category) => category.isSystem).map((category) => category.name),
     );
 
     for (const seed of seeds) {
       if (names.has(seed.name)) continue;
-      await this.repository.save(seed);
+      await this.categoryRepository.save(seed);
       names.add(seed.name);
     }
   }

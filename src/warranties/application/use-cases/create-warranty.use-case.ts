@@ -10,6 +10,14 @@ import type { IdGenerator } from '@/shared/domain/services/id-generator';
 import { Warranty, type CreateWarrantyData } from '@/warranties/domain/entities/warranty.entity';
 import type { WarrantyRepository } from '@/warranties/domain/repositories/warranty.repository';
 
+export interface CreateWarrantyDependencies {
+  warrantyRepository: WarrantyRepository;
+  productRepository: ProductRepository;
+  scheduleWarrantyReminders: ScheduleWarrantyRemindersUseCase;
+  idGenerator: IdGenerator;
+  clock: Clock;
+}
+
 export class CreateWarrantyUseCase {
   private readonly warrantyRepository: WarrantyRepository;
   private readonly productRepository: ProductRepository;
@@ -17,13 +25,13 @@ export class CreateWarrantyUseCase {
   private readonly idGenerator: IdGenerator;
   private readonly clock: Clock;
 
-  constructor(
-    warrantyRepository: WarrantyRepository,
-    productRepository: ProductRepository,
-    scheduleWarrantyReminders: ScheduleWarrantyRemindersUseCase,
-    idGenerator: IdGenerator,
-    clock: Clock,
-  ) {
+  constructor({
+    warrantyRepository,
+    productRepository,
+    scheduleWarrantyReminders,
+    idGenerator,
+    clock,
+  }: CreateWarrantyDependencies) {
     this.warrantyRepository = warrantyRepository;
     this.productRepository = productRepository;
     this.scheduleWarrantyReminders = scheduleWarrantyReminders;

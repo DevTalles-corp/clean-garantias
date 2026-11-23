@@ -15,7 +15,9 @@ describe('FindWarrantyByIdUseCase', () => {
 
   beforeEach(async () => {
     context = await createSeededContext();
-    useCase = new FindWarrantyByIdUseCase(context.warranties);
+    useCase = new FindWarrantyByIdUseCase({
+      warrantyRepository: context.warranties,
+    });
   });
 
   test.each([ids.warranty, `  ${ids.warranty.toUpperCase()}  `])('devuelve la entidad con el id %p', async (id) => {

@@ -6,14 +6,19 @@ import type { CategoryRepository } from '@/categories/domain/repositories/catego
 import type { ProductRepository } from '@/products/domain/repositories/product.repository';
 import { ConflictError, NotFoundError } from '@/shared/domain/errors/domain.errors';
 
+export interface DeleteCategoryDependencies {
+  categoryRepository: CategoryRepository;
+  productRepository: ProductRepository;
+}
+
 export class DeleteCategoryUseCase {
   private readonly categoryRepository: CategoryRepository;
   private readonly productRepository: ProductRepository;
 
-  constructor(
-    categoryRepository: CategoryRepository,
-    productRepository: ProductRepository,
-  ) {
+  constructor({
+    categoryRepository,
+    productRepository,
+  }: DeleteCategoryDependencies) {
     this.categoryRepository = categoryRepository;
     this.productRepository = productRepository;
   }

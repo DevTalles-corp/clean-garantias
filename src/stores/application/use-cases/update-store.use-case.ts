@@ -5,15 +5,19 @@ import { NotFoundError } from '@/shared/domain/errors/domain.errors';
 import { Store, type CreateStoreData } from '@/stores/domain/entities/store.entity';
 import type { StoreRepository } from '@/stores/domain/repositories/store.repository';
 
-export class UpdateStoreUseCase {
-  private readonly repository: StoreRepository;
+export interface UpdateStoreDependencies {
+  storeRepository: StoreRepository;
+}
 
-  constructor(repository: StoreRepository) {
-    this.repository = repository;
+export class UpdateStoreUseCase {
+  private readonly storeRepository: StoreRepository;
+
+  constructor({ storeRepository }: UpdateStoreDependencies) {
+    this.storeRepository = storeRepository;
   }
 
   async execute(id: string, changes: Partial<CreateStoreData>): Promise<Store> {
-    const current = await this.repository.findById(Store.normalizeId(id));
+    const current = await this.storeRepository.findById(Store.normalizeId(id));
     if (!current) throw new NotFoundError('Tienda no encontrada.');
 
     // Un campo opcional enviado como undefined se borra.
@@ -24,7 +28,7 @@ export class UpdateStoreUseCase {
       createdAt: current.createdAt,
     });
 
-    await this.repository.save(store);
+    await this.storeRepository.save(store);
     return store;
   }
 }

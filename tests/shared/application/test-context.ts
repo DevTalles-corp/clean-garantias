@@ -224,13 +224,13 @@ export function createTestContext() {
     ...repositories,
     idGenerator,
     clock,
-    scheduleWarrantyReminders: new ScheduleWarrantyRemindersUseCase(
-      repositories.reminders,
-      repositories.warranties,
-      repositories.settings,
+    scheduleWarrantyReminders: new ScheduleWarrantyRemindersUseCase({
+      reminderRepository: repositories.reminders,
+      warrantyRepository: repositories.warranties,
+      settingsRepository: repositories.settings,
       idGenerator,
       clock,
-    ),
+    }),
   };
 }
 

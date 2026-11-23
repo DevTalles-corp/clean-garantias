@@ -17,7 +17,10 @@ describe('DeleteCategoryUseCase', () => {
 
   beforeEach(async () => {
     context = await createSeededContext();
-    useCase = new DeleteCategoryUseCase(context.categories, context.products);
+    useCase = new DeleteCategoryUseCase({
+      categoryRepository: context.categories,
+      productRepository: context.products,
+    });
   });
 
   test('borra el registro si no está en uso', async () => {

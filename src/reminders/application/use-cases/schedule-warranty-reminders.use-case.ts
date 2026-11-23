@@ -11,6 +11,14 @@ import type { IsoDate } from '@/shared/domain/value-objects/iso-date';
 import { Warranty } from '@/warranties/domain/entities/warranty.entity';
 import type { WarrantyRepository } from '@/warranties/domain/repositories/warranty.repository';
 
+export interface ScheduleWarrantyRemindersDependencies {
+  reminderRepository: ReminderRepository;
+  warrantyRepository: WarrantyRepository;
+  settingsRepository: SettingsRepository;
+  idGenerator: IdGenerator;
+  clock: Clock;
+}
+
 export class ScheduleWarrantyRemindersUseCase {
   private readonly reminderRepository: ReminderRepository;
   private readonly warrantyRepository: WarrantyRepository;
@@ -18,13 +26,13 @@ export class ScheduleWarrantyRemindersUseCase {
   private readonly idGenerator: IdGenerator;
   private readonly clock: Clock;
 
-  constructor(
-    reminderRepository: ReminderRepository,
-    warrantyRepository: WarrantyRepository,
-    settingsRepository: SettingsRepository,
-    idGenerator: IdGenerator,
-    clock: Clock,
-  ) {
+  constructor({
+    reminderRepository,
+    warrantyRepository,
+    settingsRepository,
+    idGenerator,
+    clock,
+  }: ScheduleWarrantyRemindersDependencies) {
     this.reminderRepository = reminderRepository;
     this.warrantyRepository = warrantyRepository;
     this.settingsRepository = settingsRepository;

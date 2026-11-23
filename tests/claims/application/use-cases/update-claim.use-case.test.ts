@@ -17,7 +17,10 @@ describe('UpdateClaimUseCase', () => {
 
   beforeEach(async () => {
     context = await createSeededContext();
-    useCase = new UpdateClaimUseCase(context.claims, context.clock);
+    useCase = new UpdateClaimUseCase({
+      claimRepository: context.claims,
+      clock: context.clock,
+    });
   });
 
   test('actualiza, guarda y conserva los demás datos', async () => {

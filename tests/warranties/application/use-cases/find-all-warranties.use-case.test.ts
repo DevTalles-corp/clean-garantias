@@ -13,7 +13,9 @@ describe('FindAllWarrantiesUseCase', () => {
 
   beforeEach(async () => {
     context = await createSeededContext();
-    useCase = new FindAllWarrantiesUseCase(context.warranties);
+    useCase = new FindAllWarrantiesUseCase({
+      warrantyRepository: context.warranties,
+    });
   });
 
   test('devuelve todos los registros', async () => {

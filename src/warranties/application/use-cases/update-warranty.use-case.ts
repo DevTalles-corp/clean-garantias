@@ -9,18 +9,25 @@ import type { Clock } from '@/shared/domain/services/clock';
 import { Warranty, type CreateWarrantyData } from '@/warranties/domain/entities/warranty.entity';
 import type { WarrantyRepository } from '@/warranties/domain/repositories/warranty.repository';
 
+export interface UpdateWarrantyDependencies {
+  warrantyRepository: WarrantyRepository;
+  productRepository: ProductRepository;
+  scheduleWarrantyReminders: ScheduleWarrantyRemindersUseCase;
+  clock: Clock;
+}
+
 export class UpdateWarrantyUseCase {
   private readonly warrantyRepository: WarrantyRepository;
   private readonly productRepository: ProductRepository;
   private readonly scheduleWarrantyReminders: ScheduleWarrantyRemindersUseCase;
   private readonly clock: Clock;
 
-  constructor(
-    warrantyRepository: WarrantyRepository,
-    productRepository: ProductRepository,
-    scheduleWarrantyReminders: ScheduleWarrantyRemindersUseCase,
-    clock: Clock,
-  ) {
+  constructor({
+    warrantyRepository,
+    productRepository,
+    scheduleWarrantyReminders,
+    clock,
+  }: UpdateWarrantyDependencies) {
     this.warrantyRepository = warrantyRepository;
     this.productRepository = productRepository;
     this.scheduleWarrantyReminders = scheduleWarrantyReminders;

@@ -10,6 +10,15 @@ import type { Clock } from '@/shared/domain/services/clock';
 import type { IdGenerator } from '@/shared/domain/services/id-generator';
 import type { WarrantyRepository } from '@/warranties/domain/repositories/warranty.repository';
 
+export interface CreateAttachmentDependencies {
+  attachmentRepository: AttachmentRepository;
+  productRepository: ProductRepository;
+  warrantyRepository: WarrantyRepository;
+  claimRepository: ClaimRepository;
+  idGenerator: IdGenerator;
+  clock: Clock;
+}
+
 export class CreateAttachmentUseCase {
   private readonly attachmentRepository: AttachmentRepository;
   private readonly productRepository: ProductRepository;
@@ -18,14 +27,14 @@ export class CreateAttachmentUseCase {
   private readonly idGenerator: IdGenerator;
   private readonly clock: Clock;
 
-  constructor(
-    attachmentRepository: AttachmentRepository,
-    productRepository: ProductRepository,
-    warrantyRepository: WarrantyRepository,
-    claimRepository: ClaimRepository,
-    idGenerator: IdGenerator,
-    clock: Clock,
-  ) {
+  constructor({
+    attachmentRepository,
+    productRepository,
+    warrantyRepository,
+    claimRepository,
+    idGenerator,
+    clock,
+  }: CreateAttachmentDependencies) {
     this.attachmentRepository = attachmentRepository;
     this.productRepository = productRepository;
     this.warrantyRepository = warrantyRepository;

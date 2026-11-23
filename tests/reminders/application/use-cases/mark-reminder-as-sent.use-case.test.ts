@@ -16,7 +16,9 @@ describe('MarkReminderAsSentUseCase', () => {
 
   beforeEach(async () => {
     context = await createSeededContext();
-    useCase = new MarkReminderAsSentUseCase(context.reminders);
+    useCase = new MarkReminderAsSentUseCase({
+      reminderRepository: context.reminders,
+    });
   });
 
   test('actualiza y guarda el recordatorio', async () => {

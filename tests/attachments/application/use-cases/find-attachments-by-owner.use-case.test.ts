@@ -13,7 +13,9 @@ describe('FindAttachmentsByOwnerUseCase', () => {
 
   beforeEach(async () => {
     context = await createSeededContext();
-    useCase = new FindAttachmentsByOwnerUseCase(context.attachments);
+    useCase = new FindAttachmentsByOwnerUseCase({
+      attachmentRepository: context.attachments,
+    });
   });
 
   test('normaliza el id y devuelve los adjuntos del dueño', async () => {

@@ -17,7 +17,11 @@ describe('CreateStoreUseCase', () => {
 
   beforeEach(async () => {
     context = await createSeededContext();
-    useCase = new CreateStoreUseCase(context.stores, context.idGenerator, context.clock);
+    useCase = new CreateStoreUseCase({
+      storeRepository: context.stores,
+      idGenerator: context.idGenerator,
+      clock: context.clock,
+    });
   });
 
   test('crea, guarda y devuelve la entidad con id y fecha inyectados', async () => {

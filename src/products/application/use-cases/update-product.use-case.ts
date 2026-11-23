@@ -9,6 +9,14 @@ import type { Clock } from '@/shared/domain/services/clock';
 import type { StoreRepository } from '@/stores/domain/repositories/store.repository';
 import type { WarrantyRepository } from '@/warranties/domain/repositories/warranty.repository';
 
+export interface UpdateProductDependencies {
+  productRepository: ProductRepository;
+  categoryRepository: CategoryRepository;
+  storeRepository: StoreRepository;
+  warrantyRepository: WarrantyRepository;
+  clock: Clock;
+}
+
 export class UpdateProductUseCase {
   private readonly productRepository: ProductRepository;
   private readonly categoryRepository: CategoryRepository;
@@ -16,13 +24,13 @@ export class UpdateProductUseCase {
   private readonly warrantyRepository: WarrantyRepository;
   private readonly clock: Clock;
 
-  constructor(
-    productRepository: ProductRepository,
-    categoryRepository: CategoryRepository,
-    storeRepository: StoreRepository,
-    warrantyRepository: WarrantyRepository,
-    clock: Clock,
-  ) {
+  constructor({
+    productRepository,
+    categoryRepository,
+    storeRepository,
+    warrantyRepository,
+    clock,
+  }: UpdateProductDependencies) {
     this.productRepository = productRepository;
     this.categoryRepository = categoryRepository;
     this.storeRepository = storeRepository;

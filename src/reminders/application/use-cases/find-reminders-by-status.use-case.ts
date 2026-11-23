@@ -4,14 +4,18 @@
 import type { Reminder, ReminderStatus } from '@/reminders/domain/entities/reminder.entity';
 import type { ReminderRepository } from '@/reminders/domain/repositories/reminder.repository';
 
-export class FindRemindersByStatusUseCase {
-  private readonly repository: ReminderRepository;
+export interface FindRemindersByStatusDependencies {
+  reminderRepository: ReminderRepository;
+}
 
-  constructor(repository: ReminderRepository) {
-    this.repository = repository;
+export class FindRemindersByStatusUseCase {
+  private readonly reminderRepository: ReminderRepository;
+
+  constructor({ reminderRepository }: FindRemindersByStatusDependencies) {
+    this.reminderRepository = reminderRepository;
   }
 
   async execute(status: ReminderStatus): Promise<Reminder[]> {
-    return this.repository.findByStatus(status);
+    return this.reminderRepository.findByStatus(status);
   }
 }

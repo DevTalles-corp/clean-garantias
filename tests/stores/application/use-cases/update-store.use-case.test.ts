@@ -17,7 +17,7 @@ describe('UpdateStoreUseCase', () => {
 
   beforeEach(async () => {
     context = await createSeededContext();
-    useCase = new UpdateStoreUseCase(context.stores);
+    useCase = new UpdateStoreUseCase({ storeRepository: context.stores });
   });
 
   test('actualiza, guarda y conserva los demás datos', async () => {

@@ -13,7 +13,9 @@ describe('FindAllCategoriesUseCase', () => {
 
   beforeEach(async () => {
     context = await createSeededContext();
-    useCase = new FindAllCategoriesUseCase(context.categories);
+    useCase = new FindAllCategoriesUseCase({
+      categoryRepository: context.categories,
+    });
   });
 
   test('devuelve todos los registros', async () => {

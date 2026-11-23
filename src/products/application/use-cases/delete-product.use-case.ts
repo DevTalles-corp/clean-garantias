@@ -8,18 +8,25 @@ import { NotFoundError } from '@/shared/domain/errors/domain.errors';
 import type { DeleteWarrantyUseCase } from '@/warranties/application/use-cases/delete-warranty.use-case';
 import type { WarrantyRepository } from '@/warranties/domain/repositories/warranty.repository';
 
+export interface DeleteProductDependencies {
+  productRepository: ProductRepository;
+  warrantyRepository: WarrantyRepository;
+  attachmentRepository: AttachmentRepository;
+  deleteWarranty: DeleteWarrantyUseCase;
+}
+
 export class DeleteProductUseCase {
   private readonly productRepository: ProductRepository;
   private readonly warrantyRepository: WarrantyRepository;
   private readonly attachmentRepository: AttachmentRepository;
   private readonly deleteWarranty: DeleteWarrantyUseCase;
 
-  constructor(
-    productRepository: ProductRepository,
-    warrantyRepository: WarrantyRepository,
-    attachmentRepository: AttachmentRepository,
-    deleteWarranty: DeleteWarrantyUseCase,
-  ) {
+  constructor({
+    productRepository,
+    warrantyRepository,
+    attachmentRepository,
+    deleteWarranty,
+  }: DeleteProductDependencies) {
     this.productRepository = productRepository;
     this.warrantyRepository = warrantyRepository;
     this.attachmentRepository = attachmentRepository;

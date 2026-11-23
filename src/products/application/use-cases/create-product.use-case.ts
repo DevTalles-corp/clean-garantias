@@ -12,6 +12,14 @@ import type { Clock } from '@/shared/domain/services/clock';
 import type { IdGenerator } from '@/shared/domain/services/id-generator';
 import type { StoreRepository } from '@/stores/domain/repositories/store.repository';
 
+export interface CreateProductDependencies {
+  productRepository: ProductRepository;
+  categoryRepository: CategoryRepository;
+  storeRepository: StoreRepository;
+  idGenerator: IdGenerator;
+  clock: Clock;
+}
+
 export class CreateProductUseCase {
   private readonly productRepository: ProductRepository;
   private readonly categoryRepository: CategoryRepository;
@@ -19,13 +27,13 @@ export class CreateProductUseCase {
   private readonly idGenerator: IdGenerator;
   private readonly clock: Clock;
 
-  constructor(
-    productRepository: ProductRepository,
-    categoryRepository: CategoryRepository,
-    storeRepository: StoreRepository,
-    idGenerator: IdGenerator,
-    clock: Clock
-  ) {
+  constructor({
+    productRepository,
+    categoryRepository,
+    storeRepository,
+    idGenerator,
+    clock,
+  }: CreateProductDependencies) {
     this.productRepository = productRepository;
     this.categoryRepository = categoryRepository;
     this.storeRepository = storeRepository;

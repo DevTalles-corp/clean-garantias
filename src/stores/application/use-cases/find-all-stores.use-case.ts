@@ -4,14 +4,18 @@
 import type { Store } from '@/stores/domain/entities/store.entity';
 import type { StoreRepository } from '@/stores/domain/repositories/store.repository';
 
-export class FindAllStoresUseCase {
-  private readonly repository: StoreRepository;
+export interface FindAllStoresDependencies {
+  storeRepository: StoreRepository;
+}
 
-  constructor(repository: StoreRepository) {
-    this.repository = repository;
+export class FindAllStoresUseCase {
+  private readonly storeRepository: StoreRepository;
+
+  constructor({ storeRepository }: FindAllStoresDependencies) {
+    this.storeRepository = storeRepository;
   }
 
   async execute(): Promise<Store[]> {
-    return this.repository.findAll();
+    return this.storeRepository.findAll();
   }
 }

@@ -5,16 +5,20 @@ import { Attachment } from '@/attachments/domain/entities/attachment.entity';
 import type { AttachmentRepository } from '@/attachments/domain/repositories/attachment.repository';
 import { NotFoundError } from '@/shared/domain/errors/domain.errors';
 
-export class DeleteAttachmentUseCase {
-  private readonly repository: AttachmentRepository;
+export interface DeleteAttachmentDependencies {
+  attachmentRepository: AttachmentRepository;
+}
 
-  constructor(repository: AttachmentRepository) {
-    this.repository = repository;
+export class DeleteAttachmentUseCase {
+  private readonly attachmentRepository: AttachmentRepository;
+
+  constructor({ attachmentRepository }: DeleteAttachmentDependencies) {
+    this.attachmentRepository = attachmentRepository;
   }
 
   async execute(id: string): Promise<void> {
-    const attachment = await this.repository.findById(Attachment.normalizeId(id));
+    const attachment = await this.attachmentRepository.findById(Attachment.normalizeId(id));
     if (!attachment) throw new NotFoundError('Adjunto no encontrado.');
-    await this.repository.delete(attachment.id);
+    await this.attachmentRepository.delete(attachment.id);
   }
 }

@@ -19,12 +19,17 @@ describe('DeleteProductUseCase', () => {
 
   beforeEach(async () => {
     context = await createSeededContext();
-    useCase = new DeleteProductUseCase(
-      context.products,
-      context.warranties,
-      context.attachments,
-      new DeleteWarrantyUseCase(context.warranties, context.reminders, context.claims, context.attachments),
-    );
+    useCase = new DeleteProductUseCase({
+      productRepository: context.products,
+      warrantyRepository: context.warranties,
+      attachmentRepository: context.attachments,
+      deleteWarranty: new DeleteWarrantyUseCase({
+        warrantyRepository: context.warranties,
+        reminderRepository: context.reminders,
+        claimRepository: context.claims,
+        attachmentRepository: context.attachments,
+      }),
+    });
   });
 
   test('borra en cascada todo lo que depende del producto', async () => {

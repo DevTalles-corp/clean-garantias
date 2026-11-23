@@ -17,7 +17,10 @@ describe('DeleteClaimUseCase', () => {
 
   beforeEach(async () => {
     context = await createSeededContext();
-    useCase = new DeleteClaimUseCase(context.claims, context.attachments);
+    useCase = new DeleteClaimUseCase({
+      claimRepository: context.claims,
+      attachmentRepository: context.attachments,
+    });
   });
 
   test('borra el reclamo y sus adjuntos, y conserva los ajenos', async () => {

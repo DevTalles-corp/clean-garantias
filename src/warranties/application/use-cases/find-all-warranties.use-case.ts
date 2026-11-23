@@ -4,14 +4,18 @@
 import type { Warranty } from '@/warranties/domain/entities/warranty.entity';
 import type { WarrantyRepository } from '@/warranties/domain/repositories/warranty.repository';
 
-export class FindAllWarrantiesUseCase {
-  private readonly repository: WarrantyRepository;
+export interface FindAllWarrantiesDependencies {
+  warrantyRepository: WarrantyRepository;
+}
 
-  constructor(repository: WarrantyRepository) {
-    this.repository = repository;
+export class FindAllWarrantiesUseCase {
+  private readonly warrantyRepository: WarrantyRepository;
+
+  constructor({ warrantyRepository }: FindAllWarrantiesDependencies) {
+    this.warrantyRepository = warrantyRepository;
   }
 
   async execute(): Promise<Warranty[]> {
-    return this.repository.findAll();
+    return this.warrantyRepository.findAll();
   }
 }

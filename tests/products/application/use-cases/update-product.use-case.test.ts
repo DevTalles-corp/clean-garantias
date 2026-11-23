@@ -17,13 +17,13 @@ describe('UpdateProductUseCase', () => {
 
   beforeEach(async () => {
     context = await createSeededContext();
-    useCase = new UpdateProductUseCase(
-      context.products,
-      context.categories,
-      context.stores,
-      context.warranties,
-      context.clock,
-    );
+    useCase = new UpdateProductUseCase({
+      productRepository: context.products,
+      categoryRepository: context.categories,
+      storeRepository: context.stores,
+      warrantyRepository: context.warranties,
+      clock: context.clock,
+    });
   });
 
   test('actualiza, guarda y conserva los demás datos', async () => {

@@ -9,18 +9,25 @@ import type { IdGenerator } from '@/shared/domain/services/id-generator';
 import { Warranty } from '@/warranties/domain/entities/warranty.entity';
 import type { WarrantyRepository } from '@/warranties/domain/repositories/warranty.repository';
 
+export interface CreateClaimDependencies {
+  claimRepository: ClaimRepository;
+  warrantyRepository: WarrantyRepository;
+  idGenerator: IdGenerator;
+  clock: Clock;
+}
+
 export class CreateClaimUseCase {
   private readonly claimRepository: ClaimRepository;
   private readonly warrantyRepository: WarrantyRepository;
   private readonly idGenerator: IdGenerator;
   private readonly clock: Clock;
 
-  constructor(
-    claimRepository: ClaimRepository,
-    warrantyRepository: WarrantyRepository,
-    idGenerator: IdGenerator,
-    clock: Clock,
-  ) {
+  constructor({
+    claimRepository,
+    warrantyRepository,
+    idGenerator,
+    clock,
+  }: CreateClaimDependencies) {
     this.claimRepository = claimRepository;
     this.warrantyRepository = warrantyRepository;
     this.idGenerator = idGenerator;

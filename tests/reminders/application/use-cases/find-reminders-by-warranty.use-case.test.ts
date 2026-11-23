@@ -14,7 +14,9 @@ describe('FindRemindersByWarrantyUseCase', () => {
 
   beforeEach(async () => {
     context = await createSeededContext();
-    useCase = new FindRemindersByWarrantyUseCase(context.reminders);
+    useCase = new FindRemindersByWarrantyUseCase({
+      reminderRepository: context.reminders,
+    });
   });
 
   test('normaliza el id y devuelve los registros relacionados', async () => {

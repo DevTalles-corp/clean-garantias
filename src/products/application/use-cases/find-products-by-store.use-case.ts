@@ -5,14 +5,18 @@ import type { Product } from '@/products/domain/entities/product.entity';
 import type { ProductRepository } from '@/products/domain/repositories/product.repository';
 import { Store } from '@/stores/domain/entities/store.entity';
 
-export class FindProductsByStoreUseCase {
-  private readonly repository: ProductRepository;
+export interface FindProductsByStoreDependencies {
+  productRepository: ProductRepository;
+}
 
-  constructor(repository: ProductRepository) {
-    this.repository = repository;
+export class FindProductsByStoreUseCase {
+  private readonly productRepository: ProductRepository;
+
+  constructor({ productRepository }: FindProductsByStoreDependencies) {
+    this.productRepository = productRepository;
   }
 
   async execute(storeId: string): Promise<Product[]> {
-    return this.repository.findByStoreId(Store.normalizeId(storeId));
+    return this.productRepository.findByStoreId(Store.normalizeId(storeId));
   }
 }

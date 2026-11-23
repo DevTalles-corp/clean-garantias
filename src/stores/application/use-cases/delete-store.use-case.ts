@@ -6,11 +6,16 @@ import { ConflictError, NotFoundError } from '@/shared/domain/errors/domain.erro
 import { Store } from '@/stores/domain/entities/store.entity';
 import type { StoreRepository } from '@/stores/domain/repositories/store.repository';
 
+export interface DeleteStoreDependencies {
+  storeRepository: StoreRepository;
+  productRepository: ProductRepository;
+}
+
 export class DeleteStoreUseCase {
   private readonly storeRepository: StoreRepository;
   private readonly productRepository: ProductRepository;
 
-  constructor(storeRepository: StoreRepository, productRepository: ProductRepository) {
+  constructor({ storeRepository, productRepository }: DeleteStoreDependencies) {
     this.storeRepository = storeRepository;
     this.productRepository = productRepository;
   }

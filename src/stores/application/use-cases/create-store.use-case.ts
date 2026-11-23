@@ -6,13 +6,23 @@ import type { IdGenerator } from '@/shared/domain/services/id-generator';
 import { Store, type CreateStoreData } from '@/stores/domain/entities/store.entity';
 import type { StoreRepository } from '@/stores/domain/repositories/store.repository';
 
+export interface CreateStoreDependencies {
+  storeRepository: StoreRepository;
+  idGenerator: IdGenerator;
+  clock: Clock;
+}
+
 export class CreateStoreUseCase {
-  private readonly repository: StoreRepository;
+  private readonly storeRepository: StoreRepository;
   private readonly idGenerator: IdGenerator;
   private readonly clock: Clock;
 
-  constructor(repository: StoreRepository, idGenerator: IdGenerator, clock: Clock) {
-    this.repository = repository;
+  constructor({
+    storeRepository,
+    idGenerator,
+    clock,
+  }: CreateStoreDependencies) {
+    this.storeRepository = storeRepository;
     this.idGenerator = idGenerator;
     this.clock = clock;
   }
@@ -24,7 +34,7 @@ export class CreateStoreUseCase {
       createdAt: this.clock.today(),
     });
 
-    await this.repository.save(store);
+    await this.storeRepository.save(store);
     return store;
   }
 }

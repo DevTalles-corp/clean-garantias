@@ -25,13 +25,13 @@ describe('CreateProductUseCase', () => {
 
   beforeEach(async () => {
     context = await createSeededContext();
-    useCase = new CreateProductUseCase(
-      context.products,
-      context.categories,
-      context.stores,
-      context.idGenerator,
-      context.clock,
-    );
+    useCase = new CreateProductUseCase({
+      productRepository: context.products,
+      categoryRepository: context.categories,
+      storeRepository: context.stores,
+      idGenerator: context.idGenerator,
+      clock: context.clock,
+    });
   });
 
   test('crea, guarda y devuelve la entidad con id y fecha inyectados', async () => {

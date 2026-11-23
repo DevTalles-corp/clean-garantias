@@ -16,7 +16,9 @@ describe('CancelReminderUseCase', () => {
 
   beforeEach(async () => {
     context = await createSeededContext();
-    useCase = new CancelReminderUseCase(context.reminders);
+    useCase = new CancelReminderUseCase({
+      reminderRepository: context.reminders,
+    });
   });
 
   test('actualiza y guarda el recordatorio', async () => {

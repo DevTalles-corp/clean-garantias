@@ -4,14 +4,18 @@
 import { Attachment, type AttachmentOwner } from '@/attachments/domain/entities/attachment.entity';
 import type { AttachmentRepository } from '@/attachments/domain/repositories/attachment.repository';
 
-export class FindAttachmentsByOwnerUseCase {
-  private readonly repository: AttachmentRepository;
+export interface FindAttachmentsByOwnerDependencies {
+  attachmentRepository: AttachmentRepository;
+}
 
-  constructor(repository: AttachmentRepository) {
-    this.repository = repository;
+export class FindAttachmentsByOwnerUseCase {
+  private readonly attachmentRepository: AttachmentRepository;
+
+  constructor({ attachmentRepository }: FindAttachmentsByOwnerDependencies) {
+    this.attachmentRepository = attachmentRepository;
   }
 
   async execute(ownerType: AttachmentOwner, ownerId: string): Promise<Attachment[]> {
-    return this.repository.findByOwner(ownerType, Attachment.normalizeId(ownerId));
+    return this.attachmentRepository.findByOwner(ownerType, Attachment.normalizeId(ownerId));
   }
 }

@@ -12,7 +12,9 @@ describe('FindRemindersByStatusUseCase', () => {
 
   beforeEach(async () => {
     context = await createSeededContext();
-    useCase = new FindRemindersByStatusUseCase(context.reminders);
+    useCase = new FindRemindersByStatusUseCase({
+      reminderRepository: context.reminders,
+    });
   });
 
   test('devuelve solo los recordatorios con ese estado', async () => {

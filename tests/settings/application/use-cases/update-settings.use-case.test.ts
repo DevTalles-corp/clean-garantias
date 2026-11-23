@@ -16,11 +16,11 @@ describe('UpdateSettingsUseCase', () => {
 
   beforeEach(async () => {
     context = await createSeededContext();
-    useCase = new UpdateSettingsUseCase(
-      context.settings,
-      context.warranties,
-      context.scheduleWarrantyReminders,
-    );
+    useCase = new UpdateSettingsUseCase({
+      settingsRepository: context.settings,
+      warrantyRepository: context.warranties,
+      scheduleWarrantyReminders: context.scheduleWarrantyReminders,
+    });
   });
 
   test('actualiza y guarda sin tocar los recordatorios si no les afecta', async () => {
@@ -55,11 +55,11 @@ describe('UpdateSettingsUseCase', () => {
     const empty = createTestContext();
 
     await expect(
-      new UpdateSettingsUseCase(
-        empty.settings,
-        empty.warranties,
-        empty.scheduleWarrantyReminders,
-      ).execute({}),
+      new UpdateSettingsUseCase({
+        settingsRepository: empty.settings,
+        warrantyRepository: empty.warranties,
+        scheduleWarrantyReminders: empty.scheduleWarrantyReminders,
+      }).execute({}),
     ).rejects.toThrow(notFoundError('Configuración no encontrada.'));
   });
 });

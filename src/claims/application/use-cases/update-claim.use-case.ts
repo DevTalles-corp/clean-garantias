@@ -6,22 +6,27 @@ import type { ClaimRepository } from '@/claims/domain/repositories/claim.reposit
 import { NotFoundError } from '@/shared/domain/errors/domain.errors';
 import type { Clock } from '@/shared/domain/services/clock';
 
+export interface UpdateClaimDependencies {
+  claimRepository: ClaimRepository;
+  clock: Clock;
+}
+
 export class UpdateClaimUseCase {
-  private readonly repository: ClaimRepository;
+  private readonly claimRepository: ClaimRepository;
   private readonly clock: Clock;
 
-  constructor(repository: ClaimRepository, clock: Clock) {
-    this.repository = repository;
+  constructor({ claimRepository, clock }: UpdateClaimDependencies) {
+    this.claimRepository = claimRepository;
     this.clock = clock;
   }
 
   async execute(id: string, changes: UpdateClaimData): Promise<Claim> {
-    const current = await this.repository.findById(Claim.normalizeId(id));
+    const current = await this.claimRepository.findById(Claim.normalizeId(id));
     if (!current) throw new NotFoundError('Reclamo no encontrado.');
 
     const claim = current.update(changes, this.clock.today());
 
-    await this.repository.save(claim);
+    await this.claimRepository.save(claim);
     return claim;
   }
 }

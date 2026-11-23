@@ -13,7 +13,7 @@ describe('FindAllStoresUseCase', () => {
 
   beforeEach(async () => {
     context = await createSeededContext();
-    useCase = new FindAllStoresUseCase(context.stores);
+    useCase = new FindAllStoresUseCase({ storeRepository: context.stores });
   });
 
   test('devuelve todos los registros', async () => {

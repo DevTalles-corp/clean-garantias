@@ -22,12 +22,12 @@ describe('CreateClaimUseCase', () => {
 
   beforeEach(async () => {
     context = await createSeededContext();
-    useCase = new CreateClaimUseCase(
-      context.claims,
-      context.warranties,
-      context.idGenerator,
-      context.clock,
-    );
+    useCase = new CreateClaimUseCase({
+      claimRepository: context.claims,
+      warrantyRepository: context.warranties,
+      idGenerator: context.idGenerator,
+      clock: context.clock,
+    });
   });
 
   test('crea, guarda y devuelve la entidad con id y fecha inyectados', async () => {

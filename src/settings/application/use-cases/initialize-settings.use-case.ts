@@ -4,19 +4,23 @@
 import { Settings, type CreateSettingsData } from '@/settings/domain/entities/settings.entity';
 import type { SettingsRepository } from '@/settings/domain/repositories/settings.repository';
 
-export class InitializeSettingsUseCase {
-  private readonly repository: SettingsRepository;
+export interface InitializeSettingsDependencies {
+  settingsRepository: SettingsRepository;
+}
 
-  constructor(repository: SettingsRepository) {
-    this.repository = repository;
+export class InitializeSettingsUseCase {
+  private readonly settingsRepository: SettingsRepository;
+
+  constructor({ settingsRepository }: InitializeSettingsDependencies) {
+    this.settingsRepository = settingsRepository;
   }
 
   async execute(defaults: CreateSettingsData): Promise<Settings> {
-    const current = await this.repository.find();
+    const current = await this.settingsRepository.find();
     if (current) return current;
 
     const settings = Settings.create(defaults);
-    await this.repository.save(settings);
+    await this.settingsRepository.save(settings);
     return settings;
   }
 }
