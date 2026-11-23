@@ -1,6 +1,7 @@
 // Punto de composición: único lugar que crea implementaciones e inyecta dependencias.
 // Expone los casos de uso agrupados por módulo; la UI los recibe con UseCasesProvider.
 
+import { AttachPhotoUseCase } from '@/attachments/application/use-cases/attach-photo.use-case';
 import { ChooseMorePhotosUseCase } from '@/attachments/application/use-cases/choose-more-photos.use-case';
 import { CreateAttachmentUseCase } from '@/attachments/application/use-cases/create-attachment.use-case';
 import { FindAttachmentsByOwnerUseCase } from '@/attachments/application/use-cases/find-attachments-by-owner.use-case';
@@ -9,6 +10,7 @@ import { GetPhotoAccessUseCase } from '@/attachments/application/use-cases/get-p
 import { PickPhotoUseCase } from '@/attachments/application/use-cases/pick-photo.use-case';
 import { RequestPhotoAccessUseCase } from '@/attachments/application/use-cases/request-photo-access.use-case';
 import { SqliteAttachmentRepository } from '@/attachments/infrastructure/repositories/sqlite.attachment-repository';
+import { ExpoAttachmentStorage } from '@/attachments/infrastructure/services/expo.attachment-storage';
 import { ExpoPhotoLibrary } from '@/attachments/infrastructure/services/expo.photo-library';
 import { FindAllCategoriesUseCase } from '@/categories/application/use-cases/find-all-categories.use-case';
 import { SeedCategoriesUseCase } from '@/categories/application/use-cases/seed-categories.use-case';
@@ -54,9 +56,18 @@ export async function createApp() {
   //! Servicios
   const clock = new SystemClock();
   const idGenerator = new CryptoIdGenerator();
+  const attachmentStorage = new ExpoAttachmentStorage(idGenerator);
   const photoLibrary = new ExpoPhotoLibrary();
 
   //! Casos de uso
+  const createAttachment = new CreateAttachmentUseCase({
+    attachmentRepository,
+    productRepository,
+    warrantyRepository,
+    claimRepository,
+    idGenerator,
+    clock,
+  });
   const scheduleWarrantyReminders = new ScheduleWarrantyRemindersUseCase({
     reminderRepository,
     warrantyRepository,
@@ -74,14 +85,8 @@ export async function createApp() {
   return {
     clock,
     attachments: {
-      create: new CreateAttachmentUseCase({
-        attachmentRepository,
-        productRepository,
-        warrantyRepository,
-        claimRepository,
-        idGenerator,
-        clock,
-      }),
+      attachPhoto: new AttachPhotoUseCase({ attachmentStorage, createAttachment }),
+      create: createAttachment,
       findByOwner: new FindAttachmentsByOwnerUseCase({ attachmentRepository }),
     },
     categories: {
