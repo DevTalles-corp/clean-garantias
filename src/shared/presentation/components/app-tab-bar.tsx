@@ -4,19 +4,20 @@ import { usePathname } from 'expo-router';
 import { TabTrigger } from 'expo-router/ui';
 import { Platform, Pressable, View, type ViewStyle } from 'react-native';
 
-import { AppText } from '@/shared/presentation/components/app-text';
-import { fonts } from '@/shared/presentation/constants/theme';
+import { Icon } from '@/shared/presentation/components/icon';
+import type { IconName } from '@/shared/presentation/constants/icons';
 import { useScreenInsets } from '@/shared/presentation/hooks/use-screen-insets';
+import { useTheme } from '@/shared/presentation/hooks/use-theme';
 import { makeStyles } from '@/shared/presentation/utils/make-styles';
 
-// ︎ evita que el sistema dibuje el símbolo como emoji.
 export const appTabs = [
-  { name: 'summary', href: '/', label: 'Resumen', glyph: '◐︎' },
-  { name: 'products', href: '/products', label: 'Compras', glyph: '≡' },
-  { name: 'settings', href: '/settings', label: 'Ajustes', glyph: '⚙︎' },
-] as const;
+  { name: 'summary', href: '/', label: 'Resumen', icon: 'summary' },
+  { name: 'products', href: '/products', label: 'Compras', icon: 'purchases' },
+  { name: 'settings', href: '/settings', label: 'Ajustes', icon: 'settings' },
+] as const satisfies readonly { name: string; href: string; label: string; icon: IconName }[];
 
 export function AppTabBar({ onAdd }: { onAdd: () => void }) {
+  const colors = useTheme();
   const styles = useStyles();
   const pathname = usePathname();
   const { bottom } = useScreenInsets();
@@ -31,10 +32,10 @@ export function AppTabBar({ onAdd }: { onAdd: () => void }) {
               key={tab.name}
               name={tab.name}
               accessibilityRole="tab"
+              accessibilityLabel={tab.label}
               accessibilityState={{ selected }}
               style={[styles.tab, selected && styles.selected]}>
-              <AppText style={[styles.glyph, selected && styles.selectedText]}>{tab.glyph}</AppText>
-              <AppText style={[styles.label, selected && styles.selectedText]}>{tab.label}</AppText>
+              <Icon name={tab.icon} size={24} color={selected ? colors.paper : colors.body} />
             </TabTrigger>
           );
         })}
@@ -44,7 +45,7 @@ export function AppTabBar({ onAdd }: { onAdd: () => void }) {
         accessibilityLabel="Nueva compra"
         onPress={onAdd}
         style={styles.add}>
-        <AppText style={styles.plus}>+</AppText>
+        <Icon name="add" size={24} color={colors.paper} />
       </Pressable>
     </View>
   );
@@ -78,12 +79,8 @@ const useStyles = makeStyles((c) => ({
     borderRadius: 999,
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 2,
   },
   selected: { backgroundColor: c.ink },
-  glyph: { fontFamily: fonts.monoMedium, fontSize: 15, lineHeight: 15, color: c.body },
-  label: { fontFamily: fonts.sansMedium, fontSize: 11, color: c.body },
-  selectedText: { color: c.paper },
   add: {
     width: 60,
     height: 60,
@@ -93,5 +90,4 @@ const useStyles = makeStyles((c) => ({
     justifyContent: 'center',
     boxShadow: `0 8px 24px ${c.shadow30}`,
   },
-  plus: { fontSize: 30, color: c.paper },
 }));
