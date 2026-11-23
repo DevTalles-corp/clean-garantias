@@ -1,14 +1,6 @@
-/**
- * Learn more about light and dark modes:
- * https://docs.expo.dev/guides/color-schemes/
- */
+import { palettes, type Palette } from '@/shared/presentation/constants/theme';
+import { useScheme } from '@/shared/presentation/providers/theme.context';
 
-import { Colors } from '@/shared/presentation/constants/theme';
-import { useColorScheme } from '@/shared/presentation/hooks/use-color-scheme';
-
-export function useTheme() {
-  const scheme = useColorScheme();
-  const theme = scheme === 'dark' ? 'dark' : 'light';
-
-  return Colors[theme];
+export function useTheme(): Palette {
+  return palettes[useScheme()];
 }

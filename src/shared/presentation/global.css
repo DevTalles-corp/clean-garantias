@@ -1,0 +1,8 @@
+/* Solo web: mismo suavizado y saltos de línea que el diseño de referencia. */
+body {
+  -webkit-font-smoothing: antialiased;
+}
+
+[role='heading'] {
+  text-wrap: pretty;
+}

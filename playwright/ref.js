@@ -1,0 +1,30 @@
+async (page) => {
+  await page.setViewportSize({width:500,height:960});
+  await page.goto('http://localhost:8099/index.html');
+  await page.evaluate(()=>localStorage.clear()); await page.reload(); await page.waitForTimeout(2500);
+  const d=page.locator('[data-om-starter]');
+  const shot=async n=>{await page.waitForTimeout(350);await d.screenshot({path:`playwright/ref/${n}.png`,scale:'css'})};
+  const btn=t=>page.locator('button',{hasText:t}).first();
+  const scroll=async y=>page.evaluate(y=>{const e=[...document.querySelectorAll('div')].filter(e=>getComputedStyle(e).overflowY==='auto'&&e.scrollHeight>e.clientHeight+4).pop(); if(e) e.scrollTop=y;},y);
+  await shot('01-resumen'); await scroll(9999); await shot('02-resumen-fin');
+  await btn('Compras').click(); await scroll(0); await shot('03-compras'); await scroll(9999); await shot('04-compras-fin');
+  await scroll(0); await page.fill('input[placeholder^=Buscar]','zzz'); await shot('05-compras-vacio');
+  await page.fill('input[placeholder^=Buscar]',''); await btn('Por vencer').click(); await shot('06-compras-filtro');
+  await btn('Limpiar').click();
+  await btn('Ajustes').click(); await shot('07-ajustes'); await scroll(9999); await shot('08-ajustes-fin');
+  await scroll(0); await btn('Oscuro').click(); await page.waitForTimeout(600); await shot('09-ajustes-oscuro');
+  await btn('Resumen').click(); await shot('10-resumen-oscuro');
+  await btn('Ajustes').click(); await btn('Claro').click(); await page.waitForTimeout(500);
+  await btn('Resumen').click();
+  await page.getByText('Refrigerador Samsung').click(); await shot('11-detalle'); await scroll(9999); await shot('12-detalle-fin');
+  await scroll(0);
+  await btn('Extender').click(); await shot('13-extender'); await btn('Segunda').click(); await btn('Agregar').click(); await shot('14-extender-poliza');
+  await page.mouse.click(250,100); await btn('Exportar PDF').click(); await shot('15-pdf'); await btn('Compartir').click(); await shot('16-toast');
+  await btn('Volver').click(); await page.getByText('Lavadora LG').click(); await scroll(9999); await shot('17-detalle-sin-recibo'); await scroll(0); await btn('Volver').click();
+  await page.getByLabel('Nueva compra').click(); await shot('20-fuente');
+  await btn('Cámara').click(); await shot('21-camara'); await btn('Cancelar').click();
+  await btn('Galería').click(); await shot('22-galeria');
+  await page.locator('button[style*="aspect-ratio"]').first().click(); await page.waitForTimeout(400); await shot('23-leyendo'); await page.waitForTimeout(1800); await shot('24-form-ia');
+  await scroll(9999); await shot('25-form-fin'); await btn('Guardar compra').click(); await scroll(0); await shot('26-form-errores');
+  await btn('Cancelar').click(); await page.getByLabel('Nueva compra').click(); await btn('Ingresar').click(); await shot('27-form-manual');
+}

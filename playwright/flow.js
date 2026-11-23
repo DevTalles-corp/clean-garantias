@@ -1,0 +1,32 @@
+async (page) => {
+  const out=[]; const ok=async(n,l)=>out.push(`${await l.first().isVisible().catch(()=>false)?'OK ':'FALLA '}${n}`);
+  page.removeAllListeners('dialog'); page.on('dialog',d=>d.accept());
+  await page.setViewportSize({width:402,height:874});
+  await page.goto('http://localhost:8090/'); await page.getByText('Tus garantías').waitFor(); await page.waitForTimeout(800);
+  const btn=t=>page.getByRole('button',{name:t}).filter({visible:true}).first();
+  const tab=t=>page.getByRole('tab',{name:t}).first(); const T=t=>page.getByText(t).filter({visible:true});
+  await tab('Ajustes').click(); await btn('24 meses').click();
+  await page.getByLabel('Nueva compra').click(); await btn('Ingresar').click();
+  await btn('Guardar compra').click(); await ok('errores formulario',T('Elige una categoría'));
+  await page.getByLabel('Producto').fill('Hervidor Prueba'); await page.getByLabel('Tienda').fill('falabella'); await page.getByLabel('Precio').fill('34a990');
+  await btn('Hogar').click(); await ok('24 meses por defecto',T('Cubierta hasta el 19 nov 2028'));
+  await btn('Guardar compra').click(); await page.waitForTimeout(1200);
+  await ok('toast guardado',T('Compra guardada · vence el 19 nov 2028')); await ok('detalle',T('HOGAR · FALABELLA').or(T(/Hogar · Falabella/i)));
+  await btn('Extender').click(); await btn('Segunda').click(); await btn('Agregar').click(); await ok('valida póliza',T('Indica la aseguradora'));
+  await page.getByPlaceholder('Ej. Garantía').fill('Seguro X'); await btn('Agregar').click(); await page.waitForTimeout(900);
+  await ok('póliza agregada',T('Póliza · Seguro X')); await ok('nuevo fin',T('19 nov 2029'));
+  await btn('Sin recibo').click(); await page.waitForTimeout(600); await ok('recibo',T('Recibo adjuntado'));
+  const sw=n=>page.getByRole('switch',{name:n}).filter({visible:true}).first();
+  await sw('30 días antes').click(); await page.waitForTimeout(500); await sw('7 días antes').click(); await page.waitForTimeout(600); 
+  out.push('desactivados: '+await T('Desactivado').count());
+  await sw('7 días antes').click(); await page.waitForTimeout(800); out.push('desactivados tras reactivar 7: '+await T('Desactivado').count());
+  await page.reload(); await page.waitForTimeout(3000); await ok('persiste tras recargar',T('Póliza · Seguro X')); out.push('desactivados tras recargar: '+await T('Desactivado').count());
+  await btn('Eliminar').click(); await page.waitForTimeout(1000); await ok('eliminada',T('Compra eliminada')); await ok('resumen',T('en 6 garantías activas de 8 compras'));
+  await tab('Ajustes').click(); await btn('USD').click(); await page.waitForTimeout(600); await ok('muestra USD',T('US$1,299,990')); await tab('Resumen').click(); await ok('total sigue en CLP',T('$4.049.940'));
+  await tab('Ajustes').click(); await btn('CLP').click(); await btn('12 meses').click();
+  await page.getByRole('switch',{name:'Avisar 30'}).first().click(); await page.waitForTimeout(900); await tab('Resumen').click(); await page.waitForTimeout(400); await page.screenshot({path:'playwright/app/flow.png'}); 
+  await tab('Ajustes').click(); await page.getByRole('switch',{name:'Avisar 30'}).first().click(); await page.waitForTimeout(800);
+  const dl=page.waitForEvent('download',{timeout:5000}).then(d=>d.suggestedFilename()).catch(()=>'sin descarga'); await btn('Crear respaldo').click(); out.push('respaldo: '+await dl);
+  await page.goto('http://localhost:8090/products/no-existe'); await page.waitForTimeout(2500); await ok('no encontrada',T('Compra no encontrada.'));
+  return out;
+}

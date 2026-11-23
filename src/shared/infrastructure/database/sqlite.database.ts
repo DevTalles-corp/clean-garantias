@@ -5,7 +5,8 @@ import { openDatabaseAsync, type SQLiteDatabase } from 'expo-sqlite';
 
 import { migrateDatabase } from '@/shared/infrastructure/database/sqlite.migrations';
 
-const databaseName = 'mis-garantias.db';
+// Nombre nuevo: 'mis-garantias.db' puede existir en Expo Go con filas de otro formato.
+const databaseName = 'mis-garantias-v1.db';
 
 export async function openSqliteDatabase(): Promise<SQLiteDatabase> {
   const database = await openDatabaseAsync(databaseName);
