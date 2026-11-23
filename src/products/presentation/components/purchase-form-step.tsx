@@ -1,6 +1,7 @@
 import { router } from 'expo-router';
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, View } from 'react-native';
 
+import { getCategoryIcon } from '@/categories/presentation/constants/category-icons';
 import { useCategories } from '@/categories/presentation/hooks/use-categories';
 import { StepHeader } from '@/products/presentation/components/step-header';
 import { useRegisterPurchase } from '@/products/presentation/hooks/use-register-purchase';
@@ -121,11 +122,12 @@ export function PurchaseFormStep({ onClose }: { onClose: () => void }) {
         <View style={styles.group}>
           <AppText style={styles.label}>Categoría</AppText>
           <View style={styles.categories}>
-            {categories.map(({ id, name }) => (
+            {categories.map(({ id, name, icon }) => (
               <Chip
                 key={id}
                 variant="form"
                 label={name}
+                icon={getCategoryIcon(icon)}
                 selected={id === form.categoryId}
                 onPress={() => setField('categoryId', id)}
               />

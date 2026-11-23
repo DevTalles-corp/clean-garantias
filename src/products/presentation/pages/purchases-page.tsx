@@ -1,5 +1,6 @@
 import { TextInput, View } from 'react-native';
 
+import { getCategoryIcon } from '@/categories/presentation/constants/category-icons';
 import { useCategories } from '@/categories/presentation/hooks/use-categories';
 import { FilterChips } from '@/products/presentation/components/filter-chips';
 import { PurchaseRow } from '@/products/presentation/components/purchase-row';
@@ -60,12 +61,16 @@ export function PurchasesPage() {
       <View style={{ gap: 8 }}>
         <SectionLabel>Categoría</SectionLabel>
         <FilterChips
-          options={categories.map(({ name }) => name)}
+          options={categories.map(({ name, icon }) => ({ label: name, icon: getCategoryIcon(icon) }))}
           value={filters.category}
           onChange={(category) => setFilters({ category })}
         />
         <SectionLabel style={{ marginTop: 4 }}>Tienda</SectionLabel>
-        <FilterChips options={storeNames} value={filters.store} onChange={(store) => setFilters({ store })} />
+        <FilterChips
+          options={storeNames.map((label) => ({ label }))}
+          value={filters.store}
+          onChange={(store) => setFilters({ store })}
+        />
       </View>
       <View style={styles.results}>
         <AppText style={styles.count}>

@@ -1,17 +1,22 @@
 import { Pressable } from 'react-native';
 
 import { AppText } from '@/shared/presentation/components/app-text';
+import { Icon } from '@/shared/presentation/components/icon';
 import { fonts } from '@/shared/presentation/constants/theme';
+import type { IconName } from '@/shared/presentation/constants/icons';
+import { useTheme } from '@/shared/presentation/hooks/use-theme';
 import { makeStyles } from '@/shared/presentation/utils/make-styles';
 
 interface Props {
   label: string;
+  icon?: IconName;
   selected: boolean;
   onPress: () => void;
   variant?: 'filter' | 'form' | 'months' | 'extension';
 }
 
-export function Chip({ label, selected, onPress, variant = 'filter' }: Props) {
+export function Chip({ label, icon, selected, onPress, variant = 'filter' }: Props) {
+  const colors = useTheme();
   const styles = useStyles();
   const isBlock = variant === 'months' || variant === 'extension';
 
@@ -27,6 +32,7 @@ export function Chip({ label, selected, onPress, variant = 'filter' }: Props) {
         variant === 'extension' && styles.extension,
         selected && styles.selected,
       ]}>
+      {icon && <Icon name={icon} size={16} color={selected ? colors.paper : colors.body} />}
       <AppText
         style={[
           styles.label,
@@ -42,6 +48,9 @@ export function Chip({ label, selected, onPress, variant = 'filter' }: Props) {
 
 const useStyles = makeStyles((c) => ({
   chip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
     borderWidth: 1,
     borderColor: c.line15,
     borderRadius: 999,
@@ -50,7 +59,7 @@ const useStyles = makeStyles((c) => ({
     backgroundColor: c.surface,
   },
   tall: { paddingVertical: 8 },
-  block: { flex: 1, alignItems: 'center', paddingHorizontal: 0, borderRadius: 10 },
+  block: { flex: 1, justifyContent: 'center', paddingHorizontal: 0, borderRadius: 10 },
   extension: { paddingVertical: 10 },
   selected: { backgroundColor: c.ink, borderColor: c.ink },
   label: { fontSize: 13, color: c.body },
