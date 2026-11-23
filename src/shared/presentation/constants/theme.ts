@@ -81,15 +81,6 @@ const dark = Object.fromEntries(
 
 export const palettes: Record<ColorScheme, Palette> = { light, dark };
 
-// Fondos de la galería simulada.
-const galleryLight = [
-  '#6B6458', '#8A8172', '#4F4A42', '#A39886', '#5E584E', '#7A7265', '#94897A', '#565047', '#837A6C',
-];
-export const galleryColors: Record<ColorScheme, readonly string[]> = {
-  light: galleryLight,
-  dark: galleryLight.map(toDark),
-};
-
 export const fonts = {
   sans: 'Geist-Regular',
   sansMedium: 'Geist-Medium',
