@@ -6,6 +6,7 @@ import { ChooseMorePhotosUseCase } from '@/attachments/application/use-cases/cho
 import { CreateAttachmentUseCase } from '@/attachments/application/use-cases/create-attachment.use-case';
 import { FindAttachmentsByOwnerUseCase } from '@/attachments/application/use-cases/find-attachments-by-owner.use-case';
 import { FindRecentPhotosUseCase } from '@/attachments/application/use-cases/find-recent-photos.use-case';
+import { GetAttachmentUriUseCase } from '@/attachments/application/use-cases/get-attachment-uri.use-case';
 import { GetPhotoAccessUseCase } from '@/attachments/application/use-cases/get-photo-access.use-case';
 import { PickPhotoUseCase } from '@/attachments/application/use-cases/pick-photo.use-case';
 import { RequestPhotoAccessUseCase } from '@/attachments/application/use-cases/request-photo-access.use-case';
@@ -88,6 +89,7 @@ export async function createApp() {
       attachPhoto: new AttachPhotoUseCase({ attachmentStorage, createAttachment }),
       create: createAttachment,
       findByOwner: new FindAttachmentsByOwnerUseCase({ attachmentRepository }),
+      getUri: new GetAttachmentUriUseCase({ attachmentStorage }),
     },
     categories: {
       findAll: new FindAllCategoriesUseCase({ categoryRepository }),

@@ -1,7 +1,9 @@
+import { Image } from 'expo-image';
 import { Pressable, View } from 'react-native';
 
 import type { Attachment } from '@/attachments/domain/entities/attachment.entity';
 import { useAttachReceipt } from '@/attachments/presentation/hooks/use-attach-receipt';
+import { useAttachmentUri } from '@/attachments/presentation/hooks/use-attachment-uri';
 import { AppText } from '@/shared/presentation/components/app-text';
 import { Card } from '@/shared/presentation/components/card';
 import { Icon } from '@/shared/presentation/components/icon';
@@ -21,6 +23,7 @@ interface Props {
 export function ReceiptCard({ productId, receipt, storeName, price }: Props) {
   const colors = useTheme();
   const styles = useStyles();
+  const photoUri = useAttachmentUri(receipt?.fileUri);
   const attach = useAttachReceipt(productId);
 
   return (
@@ -28,19 +31,28 @@ export function ReceiptCard({ productId, receipt, storeName, price }: Props) {
       <SectionLabel>Recibo</SectionLabel>
       {receipt ? (
         <Card style={styles.card}>
-          <View style={styles.paper}>
-            <AppText numberOfLines={1} style={styles.paperStore}>
-              {storeName.toUpperCase()}
-            </AppText>
-            <View style={styles.line} />
-            <View style={[styles.line, { width: '70%' }]} />
-            <View style={styles.line} />
-            <View style={[styles.line, { width: '55%' }]} />
-            <View style={styles.paperTotal}>
-              <AppText style={styles.paperText}>TOTAL</AppText>
-              <AppText style={styles.paperText}>{price}</AppText>
+          {photoUri ? (
+            <Image
+              source={{ uri: photoUri }}
+              accessibilityLabel="Foto del recibo"
+              contentFit="cover"
+              style={styles.photo}
+            />
+          ) : (
+            <View style={styles.paper}>
+              <AppText numberOfLines={1} style={styles.paperStore}>
+                {storeName.toUpperCase()}
+              </AppText>
+              <View style={styles.line} />
+              <View style={[styles.line, { width: '70%' }]} />
+              <View style={styles.line} />
+              <View style={[styles.line, { width: '55%' }]} />
+              <View style={styles.paperTotal}>
+                <AppText style={styles.paperText}>TOTAL</AppText>
+                <AppText style={styles.paperText}>{price}</AppText>
+              </View>
             </View>
-          </View>
+          )}
           <View style={{ flex: 1, gap: 3 }}>
             <AppText style={styles.fileName}>{receipt.fileName}</AppText>
             <AppText style={styles.storage}>Guardado en el dispositivo</AppText>
@@ -62,6 +74,7 @@ export function ReceiptCard({ productId, receipt, storeName, price }: Props) {
 
 const useStyles = makeStyles((c) => ({
   card: { flexDirection: 'row', alignItems: 'center', gap: 14, padding: 12 },
+  photo: { width: 74, height: 96, borderRadius: 8, backgroundColor: c.tile },
   paper: {
     width: 74,
     height: 96,
