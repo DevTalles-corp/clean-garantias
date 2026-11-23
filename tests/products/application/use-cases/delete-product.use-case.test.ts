@@ -23,6 +23,7 @@ describe('DeleteProductUseCase', () => {
       productRepository: context.products,
       warrantyRepository: context.warranties,
       attachmentRepository: context.attachments,
+      attachmentStorage: context.attachmentStorage,
       deleteWarranty: new DeleteWarrantyUseCase({
         warrantyRepository: context.warranties,
         reminderRepository: context.reminders,
@@ -68,6 +69,27 @@ describe('DeleteProductUseCase', () => {
 
     await useCase.execute(ids.product);
     expect(await context.products.findAll()).toEqual([]);
+  });
+
+  test('borra primero el registro y luego el archivo', async () => {
+    const fileUri = await context.attachmentStorage.save('file:///foto.jpg', 'foto.jpg');
+    await context.attachments.save(Attachment.create({ ...entities.attachment, fileUri }));
+    const deleteRecord = jest.spyOn(context.attachments, 'delete');
+    const deleteFile = jest.spyOn(context.attachmentStorage, 'delete');
+
+    await useCase.execute(ids.product);
+
+    expect(context.attachmentStorage.files.size).toBe(0);
+    expect(deleteRecord.mock.invocationCallOrder[0]).toBeLessThan(deleteFile.mock.invocationCallOrder[0]);
+  });
+
+  test('borra la compra aunque falle el borrado del archivo', async () => {
+    jest.spyOn(context.attachmentStorage, 'delete').mockRejectedValue(new Error('bloqueado'));
+
+    await useCase.execute(ids.product);
+
+    expect(await context.products.findAll()).toEqual([]);
+    expect(await context.attachments.findAll()).toEqual([]);
   });
 
   test('lanza NotFoundError si no existe', async () => {

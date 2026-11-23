@@ -1,7 +1,8 @@
-// Caso de uso de aplicación: borra un producto con sus garantías y adjuntos.
+// Caso de uso de aplicación: borra un producto con sus garantías, adjuntos y archivos.
 // Coordina la cascada de dependientes a raíz; sin él, quedarían datos huérfanos. Si falla, se puede reintentar.
 
 import type { AttachmentRepository } from '@/attachments/domain/repositories/attachment.repository';
+import type { AttachmentStorage } from '@/attachments/domain/services/attachment-storage';
 import { Product } from '@/products/domain/entities/product.entity';
 import type { ProductRepository } from '@/products/domain/repositories/product.repository';
 import { NotFoundError } from '@/shared/domain/errors/domain.errors';
@@ -12,6 +13,7 @@ export interface DeleteProductDependencies {
   productRepository: ProductRepository;
   warrantyRepository: WarrantyRepository;
   attachmentRepository: AttachmentRepository;
+  attachmentStorage: AttachmentStorage;
   deleteWarranty: DeleteWarrantyUseCase;
 }
 
@@ -19,17 +21,20 @@ export class DeleteProductUseCase {
   private readonly productRepository: ProductRepository;
   private readonly warrantyRepository: WarrantyRepository;
   private readonly attachmentRepository: AttachmentRepository;
+  private readonly attachmentStorage: AttachmentStorage;
   private readonly deleteWarranty: DeleteWarrantyUseCase;
 
   constructor({
     productRepository,
     warrantyRepository,
     attachmentRepository,
+    attachmentStorage,
     deleteWarranty,
   }: DeleteProductDependencies) {
     this.productRepository = productRepository;
     this.warrantyRepository = warrantyRepository;
     this.attachmentRepository = attachmentRepository;
+    this.attachmentStorage = attachmentStorage;
     this.deleteWarranty = deleteWarranty;
   }
 
@@ -42,6 +47,8 @@ export class DeleteProductUseCase {
     }
     for (const attachment of await this.attachmentRepository.findByOwner('product', product.id)) {
       await this.attachmentRepository.delete(attachment.id);
+      // Un archivo huérfano es preferible a una compra que no se puede eliminar.
+      await this.attachmentStorage.delete(attachment.fileUri).catch(() => undefined);
     }
 
     await this.productRepository.delete(product.id);
