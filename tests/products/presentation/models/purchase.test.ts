@@ -52,7 +52,7 @@ const filters = { query: '', category: null, store: null, status: null };
 
 describe('purchase', () => {
   test('encadena las garantías y usa la que vence al último', () => {
-    expect(purchases[0]).toMatchObject({ endDate: '2028-01-01', status: 'active', categoryCode: 'CÓM' });
+    expect(purchases[0]).toMatchObject({ endDate: '2028-01-01', status: 'active', categoryIcon: 'laptopcomputer' });
     expect(purchases[0].warranties.map(({ id }) => id)).toEqual([testId(20), testId(21)]);
   });
 
@@ -69,7 +69,12 @@ describe('purchase', () => {
       thresholdDays: 30,
       today,
     });
-    expect(purchase).toMatchObject({ status: 'expired', storeName: 'Sin tienda', categoryName: 'Otros' });
+    expect(purchase).toMatchObject({
+      status: 'expired',
+      storeName: 'Sin tienda',
+      categoryName: 'Otros',
+      categoryIcon: 'shippingbox',
+    });
   });
 
   test('filtra por texto y estado, y deja las vencidas al final', () => {

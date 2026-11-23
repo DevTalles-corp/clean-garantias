@@ -1,11 +1,14 @@
 import { router } from 'expo-router';
 import { Pressable, View } from 'react-native';
 
+import { getCategoryIcon } from '@/categories/presentation/constants/category-icons';
 import type { Purchase } from '@/products/presentation/models/purchase';
 import { AppText } from '@/shared/presentation/components/app-text';
+import { Icon } from '@/shared/presentation/components/icon';
 import { fonts } from '@/shared/presentation/constants/theme';
 import { formatDate } from '@/shared/presentation/formatters/format-date';
 import { formatMoney } from '@/shared/presentation/formatters/format-money';
+import { useTheme } from '@/shared/presentation/hooks/use-theme';
 import { makeStyles } from '@/shared/presentation/utils/make-styles';
 import { WarrantyStatusBadge } from '@/warranties/presentation/components/warranty-status-badge';
 import { formatDue } from '@/warranties/presentation/formatters/format-warranty';
@@ -16,6 +19,7 @@ interface Props {
 }
 
 export function PurchaseRow({ purchase, variant }: Props) {
+  const colors = useTheme();
   const styles = useStyles();
   const detail =
     variant === 'list' ? `vence ${formatDate(purchase.endDate)}` : formatMoney(purchase.product.purchasePrice);
@@ -29,8 +33,8 @@ export function PurchaseRow({ purchase, variant }: Props) {
         variant === 'list' ? styles.listRow : styles.cardRow,
         pressed && styles.pressed,
       ]}>
-      <View style={styles.tile}>
-        <AppText style={styles.code}>{purchase.categoryCode}</AppText>
+      <View role="img" aria-label={purchase.categoryName} style={styles.tile}>
+        <Icon name={getCategoryIcon(purchase.categoryIcon)} color={colors.body} />
       </View>
       <View style={styles.texts}>
         <AppText numberOfLines={1} style={styles.name}>
@@ -61,7 +65,6 @@ const useStyles = makeStyles((c) => ({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  code: { fontFamily: fonts.monoMedium, fontSize: 11, color: c.body },
   texts: { flex: 1, minWidth: 0, gap: 2 },
   name: { fontFamily: fonts.sansMedium, fontSize: 15 },
   detail: { fontSize: 12.5, color: c.muted },

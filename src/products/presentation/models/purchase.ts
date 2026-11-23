@@ -14,7 +14,7 @@ export interface Purchase {
   product: Product;
   storeName: string;
   categoryName: string;
-  categoryCode: string;
+  categoryIcon: string; // SF Symbol de la categoría
   warranties: readonly Warranty[]; // en orden cronológico
   finalWarranty?: Warranty; // la que vence al último
   endDate: IsoDate;
@@ -33,7 +33,7 @@ export interface PurchaseSources {
 
 export function buildPurchases(sources: PurchaseSources): Purchase[] {
   const { products, warranties, categories, stores, thresholdDays, today } = sources;
-  const categoryNames = new Map(categories.map(({ id, name }) => [id, name]));
+  const categoriesById = new Map(categories.map((category) => [category.id, category]));
   const storeNames = new Map(stores.map(({ id, name }) => [id, name]));
 
   return products.map((product) => {
@@ -45,14 +45,14 @@ export function buildPurchases(sources: PurchaseSources): Purchase[] {
       undefined,
     );
     const endDate = finalWarranty?.endDate ?? product.purchaseDate;
-    const categoryName = categoryNames.get(product.categoryId) ?? 'Otros';
+    const category = categoriesById.get(product.categoryId);
 
     return {
       id: product.id,
       product,
       storeName: (product.storeId && storeNames.get(product.storeId)) || 'Sin tienda',
-      categoryName,
-      categoryCode: categoryName.slice(0, 3).toUpperCase(),
+      categoryName: category?.name ?? 'Otros',
+      categoryIcon: category?.icon ?? 'shippingbox',
       warranties: coverage,
       finalWarranty,
       endDate,
