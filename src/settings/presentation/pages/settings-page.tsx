@@ -60,6 +60,7 @@ export function SettingsPage() {
               <SettingField
                 divider
                 label="Moneda"
+                icon="money"
                 sample={formatMoney({ amountCents: 129999000, currency: settings.currency })}>
                 <SegmentedControl<string>
                   variant="setting"
@@ -71,7 +72,7 @@ export function SettingsPage() {
                   }}
                 />
               </SettingField>
-              <SettingField label="Tema">
+              <SettingField label="Tema" icon="theme">
                 <SegmentedControl
                   variant="setting"
                   options={themeOptions}
@@ -84,7 +85,7 @@ export function SettingsPage() {
           <View style={{ gap: 10 }}>
             <SectionLabel>Nuevas compras</SectionLabel>
             <Card>
-              <SettingField divider label="Garantía por defecto">
+              <SettingField divider label="Garantía por defecto" icon="warranty">
                 <SegmentedControl
                   variant="setting"
                   options={monthOptions}
@@ -95,6 +96,7 @@ export function SettingsPage() {
               {reminderOffsets.map((offsetDays) => (
                 <SwitchRow
                   key={offsetDays}
+                  icon="bell"
                   label={`Avisar ${offsetDays} días antes`}
                   detail="Antes de que venza la garantía"
                   value={settings.reminderOffsetsDays.includes(offsetDays)}
@@ -108,13 +110,25 @@ export function SettingsPage() {
       <View style={{ gap: 10 }}>
         <SectionLabel>Tus datos</SectionLabel>
         <Card>
-          <SettingAction divider label="Crear respaldo" detail={`${total} compras`} onPress={exportBackup} />
+          <SettingAction
+            divider
+            label="Crear respaldo"
+            icon="backup"
+            detail={`${total} compras`}
+            onPress={exportBackup}
+          />
           <SettingAction
             divider
             label="Restaurar respaldo…"
+            icon="restore"
             onPress={() => showToast('Restaurar respaldo estará disponible pronto')}
           />
-          <SettingAction destructive label="Restaurar datos de ejemplo" onPress={confirmRestore} />
+          <SettingAction
+            destructive
+            label="Restaurar datos de ejemplo"
+            icon="retry"
+            onPress={confirmRestore}
+          />
         </Card>
       </View>
     </Screen>

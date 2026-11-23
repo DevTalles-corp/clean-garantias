@@ -54,6 +54,7 @@ export function WarrantyRemindersCard({ warranty }: { warranty: Warranty }) {
             <SwitchRow
               key={offsetDays}
               monoDetail
+              icon="bell"
               label={`${offsetDays} días antes`}
               detail={isPast ? `Fecha pasada · ${date}` : isOn ? `Programado para el ${date}` : 'Desactivado'}
               value={isOn}

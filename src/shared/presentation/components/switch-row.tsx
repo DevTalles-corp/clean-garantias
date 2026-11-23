@@ -2,18 +2,23 @@ import { Pressable, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { AppText } from '@/shared/presentation/components/app-text';
+import { Icon } from '@/shared/presentation/components/icon';
 import { fonts } from '@/shared/presentation/constants/theme';
+import type { IconName } from '@/shared/presentation/constants/icons';
+import { useTheme } from '@/shared/presentation/hooks/use-theme';
 import { makeStyles } from '@/shared/presentation/utils/make-styles';
 
 interface Props {
   label: string;
+  icon: IconName;
   detail: string;
   value: boolean;
   onPress: () => void;
   monoDetail?: boolean;
 }
 
-export function SwitchRow({ label, detail, value, onPress, monoDetail = false }: Props) {
+export function SwitchRow({ label, icon, detail, value, onPress, monoDetail = false }: Props) {
+  const colors = useTheme();
   const styles = useStyles();
   return (
     <Pressable
@@ -22,6 +27,7 @@ export function SwitchRow({ label, detail, value, onPress, monoDetail = false }:
       accessibilityState={{ checked: value }}
       onPress={onPress}
       style={styles.row}>
+      <Icon name={icon} color={colors.body} />
       <View style={styles.texts}>
         <AppText style={styles.label}>{label}</AppText>
         <AppText style={[styles.detail, monoDetail && styles.monoDetail]}>{detail}</AppText>
