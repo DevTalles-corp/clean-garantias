@@ -3,6 +3,7 @@ import { Pressable, View } from 'react-native';
 import { daysBetween, type IsoDate } from '@/shared/domain/value-objects/iso-date';
 import { AppText } from '@/shared/presentation/components/app-text';
 import { Card } from '@/shared/presentation/components/card';
+import { Icon } from '@/shared/presentation/components/icon';
 import { fonts } from '@/shared/presentation/constants/theme';
 import { formatDate } from '@/shared/presentation/formatters/format-date';
 import { useTheme } from '@/shared/presentation/hooks/use-theme';
@@ -67,9 +68,11 @@ export function WarrantyCoverageCard(props: Props) {
             <View style={[styles.dot, { backgroundColor: colors[segmentColors[warranty.type]] }]} />
             <View style={styles.segmentTexts}>
               <AppText style={styles.segmentLabel}>{formatWarrantyLabel(warranty)}</AppText>
-              <AppText style={styles.segmentRange}>
-                {formatDate(warranty.startDate)} <AppText style={styles.arrow}>→</AppText> {formatDate(warranty.endDate)}
-              </AppText>
+              <View style={styles.range}>
+                <AppText style={styles.segmentRange}>{formatDate(warranty.startDate)}</AppText>
+                <Icon name="arrow" size={12} color={colors.muted} />
+                <AppText style={styles.segmentRange}>{formatDate(warranty.endDate)}</AppText>
+              </View>
             </View>
             <AppText style={styles.segmentMonths}>+{warranty.durationMonths} m</AppText>
           </View>
@@ -77,7 +80,8 @@ export function WarrantyCoverageCard(props: Props) {
       </View>
 
       <Pressable accessibilityRole="button" onPress={onExtend} style={styles.extend}>
-        <AppText style={styles.segmentLabel}>+ Extender garantía</AppText>
+        <Icon name="add" size={16} color={colors.ink} />
+        <AppText style={styles.segmentLabel}>Extender garantía</AppText>
       </Pressable>
     </Card>
   );
@@ -105,10 +109,12 @@ const useStyles = makeStyles((c) => ({
   dot: { width: 10, height: 10, borderRadius: 3 },
   segmentTexts: { flex: 1, gap: 1 },
   segmentLabel: { fontFamily: fonts.sansMedium, fontSize: 14 },
+  range: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: 6 },
   segmentRange: { fontFamily: fonts.mono, fontSize: 12, color: c.muted },
-  arrow: { fontFamily: fonts.symbol, fontSize: 12, color: c.muted },
   segmentMonths: { fontFamily: fonts.monoMedium, fontSize: 13 },
   extend: {
+    flexDirection: 'row',
+    gap: 6,
     height: 44,
     borderWidth: 1,
     borderStyle: 'dashed',

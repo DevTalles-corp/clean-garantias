@@ -4,8 +4,10 @@ import type { Attachment } from '@/attachments/domain/entities/attachment.entity
 import { useAttachReceipt } from '@/attachments/presentation/hooks/use-attach-receipt';
 import { AppText } from '@/shared/presentation/components/app-text';
 import { Card } from '@/shared/presentation/components/card';
+import { Icon } from '@/shared/presentation/components/icon';
 import { SectionLabel } from '@/shared/presentation/components/section-label';
 import { fonts } from '@/shared/presentation/constants/theme';
+import { useTheme } from '@/shared/presentation/hooks/use-theme';
 import { showToast } from '@/shared/presentation/stores/toast.store';
 import { makeStyles } from '@/shared/presentation/utils/make-styles';
 
@@ -17,6 +19,7 @@ interface Props {
 }
 
 export function ReceiptCard({ productId, receipt, storeName, price }: Props) {
+  const colors = useTheme();
   const styles = useStyles();
   const attach = useAttachReceipt(productId);
 
@@ -49,6 +52,7 @@ export function ReceiptCard({ productId, receipt, storeName, price }: Props) {
           disabled={attach.isPending}
           onPress={() => attach.mutate(undefined, { onSuccess: () => showToast('Recibo adjuntado') })}
           style={styles.empty}>
+          <Icon name="attach" size={16} color={colors.body} />
           <AppText style={styles.emptyText}>Sin recibo · Adjuntar foto</AppText>
         </Pressable>
       )}
@@ -75,6 +79,9 @@ const useStyles = makeStyles((c) => ({
   fileName: { fontFamily: fonts.sansMedium, fontSize: 14 },
   storage: { fontSize: 12.5, color: c.muted },
   empty: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 6,
     borderWidth: 1,
     borderStyle: 'dashed',
     borderColor: c.line30,

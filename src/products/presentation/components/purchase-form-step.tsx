@@ -18,6 +18,7 @@ import { AppText } from '@/shared/presentation/components/app-text';
 import { Chip } from '@/shared/presentation/components/chip';
 import { DateField } from '@/shared/presentation/components/date-field';
 import { FieldError } from '@/shared/presentation/components/field-error';
+import { Icon } from '@/shared/presentation/components/icon';
 import { PrimaryButton } from '@/shared/presentation/components/primary-button';
 import { TextField } from '@/shared/presentation/components/text-field';
 import { fonts } from '@/shared/presentation/constants/theme';
@@ -143,7 +144,7 @@ export function PurchaseFormStep({ onClose }: { onClose: () => void }) {
               accessibilityLabel="Restar un mes"
               onPress={() => changeMonths(form.months - 1)}
               style={styles.stepButton}>
-              <AppText style={styles.stepText}>−</AppText>
+              <Icon name="remove" size={16} color={colors.ink} />
             </Pressable>
             <AppText style={styles.months}>
               {form.months} <AppText style={styles.monthsUnit}>meses</AppText>
@@ -153,7 +154,7 @@ export function PurchaseFormStep({ onClose }: { onClose: () => void }) {
               accessibilityLabel="Sumar un mes"
               onPress={() => changeMonths(form.months + 1)}
               style={styles.stepButton}>
-              <AppText style={styles.stepText}>+</AppText>
+              <Icon name="add" size={16} color={colors.ink} />
             </Pressable>
           </View>
           <View style={{ flexDirection: 'row', gap: 6 }}>
@@ -200,7 +201,6 @@ const useStyles = makeStyles((c) => ({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  stepText: { fontSize: 20 },
   months: { flex: 1, textAlign: 'center', fontFamily: fonts.monoMedium, fontSize: 22 },
   monthsUnit: { fontFamily: fonts.monoMedium, fontSize: 13, color: c.muted },
   preview: { fontFamily: fonts.mono, fontSize: 12, color: c.muted },
