@@ -1,5 +1,8 @@
 import { CreateProductUseCase } from '@/products/application/use-cases/create-product.use-case';
-import { Product, type CreateProductData } from '@/products/domain/entities/product.entity';
+import {
+  Product,
+  type CreateProductData,
+} from '@/products/domain/entities/product.entity';
 
 import {
   createSeededContext,
@@ -50,27 +53,33 @@ describe('CreateProductUseCase', () => {
   test('lanza ValidationError y no guarda con datos inválidos', async () => {
     const save = jest.spyOn(context.products, 'save');
 
-    await expect(
-      useCase.execute({ ...input, name: '' }),
-    ).rejects.toThrow(validationError('El nombre es obligatorio.'));
+    await expect(useCase.execute({ ...input, name: '' })).rejects.toThrow(
+      validationError('El nombre es obligatorio.')
+    );
     expect(save).not.toHaveBeenCalled();
   });
 
   test('lanza NotFoundError y no guarda si la categoría no existe', async () => {
     const save = jest.spyOn(context.products, 'save');
 
-    await expect(useCase.execute({ ...input, categoryId: missingId })).rejects.toThrow(notFoundError('Categoría no encontrada.'));
+    await expect(
+      useCase.execute({ ...input, categoryId: missingId })
+    ).rejects.toThrow(notFoundError('Categoría no encontrada.'));
     expect(save).not.toHaveBeenCalled();
   });
 
   test('lanza NotFoundError y no guarda si la tienda no existe', async () => {
     const save = jest.spyOn(context.products, 'save');
 
-    await expect(useCase.execute({ ...input, storeId: missingId })).rejects.toThrow(notFoundError('Tienda no encontrada.'));
+    await expect(
+      useCase.execute({ ...input, storeId: missingId })
+    ).rejects.toThrow(notFoundError('Tienda no encontrada.'));
     expect(save).not.toHaveBeenCalled();
   });
 
   test('permite un producto sin tienda', async () => {
-    expect((await useCase.execute({ ...input, storeId: undefined })).storeId).toBeUndefined();
+    expect(
+      (await useCase.execute({ ...input, storeId: undefined })).storeId
+    ).toBeUndefined();
   });
 });
