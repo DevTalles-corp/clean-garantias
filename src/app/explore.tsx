@@ -3,13 +3,13 @@ import { SymbolView } from 'expo-symbols';
 import { Platform, Pressable, ScrollView, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { ExternalLink } from '@/components/external-link';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Collapsible } from '@/components/ui/collapsible';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
-import { useTheme } from '@/hooks/use-theme';
+import { ExternalLink } from '@/shared/presentation/components/external-link';
+import { ThemedText } from '@/shared/presentation/components/themed-text';
+import { ThemedView } from '@/shared/presentation/components/themed-view';
+import { Collapsible } from '@/shared/presentation/components/ui/collapsible';
+import { WebBadge } from '@/shared/presentation/components/web-badge';
+import { BottomTabInset, MaxContentWidth, Spacing } from '@/shared/presentation/constants/theme';
+import { useTheme } from '@/shared/presentation/hooks/use-theme';
 
 export default function TabTwoScreen() {
   const safeAreaInsets = useSafeAreaInsets();
@@ -113,7 +113,7 @@ export default function TabTwoScreen() {
           <Collapsible title="Animations">
             <ThemedText type="small">
               This template includes an example of an animated component. The{' '}
-              <ThemedText type="code">src/components/ui/collapsible.tsx</ThemedText> component uses
+              <ThemedText type="code">src/shared/presentation/components/ui/collapsible.tsx</ThemedText> component uses
               the powerful <ThemedText type="code">react-native-reanimated</ThemedText> library to
               animate opening this hint.
             </ThemedText>

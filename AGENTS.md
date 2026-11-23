@@ -1,5 +1,9 @@
 This is an Expo/React Native mobile application. Prioritize mobile-first patterns, performance, and cross-platform compatibility.
 
+# Arquitectura limpia
+
+Sigue la skill que se encuentra de arquitectura limpia para cualquier tipo de desarrollo e implementación. @.claude/skills/clean-architecture
+
 ## Expo has changed — do not trust your training data
 
 Expo ships breaking changes every SDK release. APIs you remember are likely renamed, moved, or removed. Before writing any code that touches an Expo, EAS, or React Native API:
