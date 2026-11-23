@@ -1,37 +1,49 @@
+import { View } from 'react-native';
+
 import { FieldFrame } from '@/shared/presentation/components/field-frame';
 import type { DateFieldProps } from '@/shared/presentation/components/date-field.types';
+import { Icon } from '@/shared/presentation/components/icon';
+import { useFieldStyles } from '@/shared/presentation/components/text-field';
 import { fonts } from '@/shared/presentation/constants/theme';
 import { useTheme } from '@/shared/presentation/hooks/use-theme';
 import { useScheme } from '@/shared/presentation/providers/theme.context';
 
-export function DateField({ label, value, max, onChange, error, detected = false }: DateFieldProps) {
+export function DateField({ label, icon, value, max, onChange, error, detected = false }: DateFieldProps) {
   const colors = useTheme();
+  const styles = useFieldStyles();
   const scheme = useScheme();
   const borderColor = error ? colors.redBorder : detected ? colors.greenBar : colors.line15;
 
   return (
     <FieldFrame label={label} error={error} detected={detected}>
-      <input
-        type="date"
-        aria-label={label}
-        value={value}
-        max={max}
-        onChange={(event) => onChange(event.target.value)}
-        style={{
-          height: 48,
-          width: '100%',
-          boxSizing: 'border-box',
-          borderRadius: 12,
-          border: `1px solid ${borderColor}`,
-          background: colors.surface,
-          padding: '0 13px',
-          fontFamily: fonts.sans,
-          fontSize: 16,
-          outline: 'none',
-          color: colors.ink,
-          colorScheme: scheme,
-        }}
-      />
+      <View>
+        <input
+          type="date"
+          aria-label={label}
+          value={value}
+          max={max}
+          onChange={(event) => onChange(event.target.value)}
+          style={{
+            height: 48,
+            width: '100%',
+            boxSizing: 'border-box',
+            borderRadius: 12,
+            border: `1px solid ${borderColor}`,
+            background: colors.surface,
+            padding: icon ? '0 13px 0 41px' : '0 13px',
+            fontFamily: fonts.sans,
+            fontSize: 16,
+            outline: 'none',
+            color: colors.ink,
+            colorScheme: scheme,
+          }}
+        />
+        {icon && (
+          <View pointerEvents="none" style={styles.icon}>
+            <Icon name={icon} color={colors.muted} />
+          </View>
+        )}
+      </View>
     </FieldFrame>
   );
 }

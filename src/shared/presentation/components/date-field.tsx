@@ -1,13 +1,15 @@
 import DateTimePicker from '@expo/ui/community/datetime-picker';
 import { useState } from 'react';
-import { Platform, Pressable } from 'react-native';
+import { Platform, Pressable, View } from 'react-native';
 
 import type { IsoDate } from '@/shared/domain/value-objects/iso-date';
 import { AppText } from '@/shared/presentation/components/app-text';
 import type { DateFieldProps } from '@/shared/presentation/components/date-field.types';
 import { FieldFrame } from '@/shared/presentation/components/field-frame';
+import { Icon } from '@/shared/presentation/components/icon';
 import { useFieldStyles } from '@/shared/presentation/components/text-field';
 import { formatDate } from '@/shared/presentation/formatters/format-date';
+import { useTheme } from '@/shared/presentation/hooks/use-theme';
 
 function toDate(date: IsoDate): Date {
   const [year, month, day] = date.split('-').map(Number);
@@ -20,7 +22,8 @@ function toIsoDate(date: Date): IsoDate {
   return `${date.getFullYear()}-${month}-${day}`;
 }
 
-export function DateField({ label, value, max, onChange, error, detected = false }: DateFieldProps) {
+export function DateField({ label, icon, value, max, onChange, error, detected = false }: DateFieldProps) {
+  const colors = useTheme();
   const styles = useFieldStyles();
   const [isOpen, setIsOpen] = useState(false);
   const isAndroid = Platform.OS === 'android';
@@ -34,10 +37,16 @@ export function DateField({ label, value, max, onChange, error, detected = false
         style={[
           styles.input,
           { justifyContent: 'center' },
+          !!icon && styles.inputWithIcon,
           detected && styles.detected,
           !!error && styles.invalid,
         ]}>
         <AppText>{value ? formatDate(value) : 'Elige una fecha'}</AppText>
+        {icon && (
+          <View pointerEvents="none" style={[styles.icon, { left: 12, top: 13 }]}>
+            <Icon name={icon} color={colors.muted} />
+          </View>
+        )}
       </Pressable>
       {isOpen && (
         <DateTimePicker

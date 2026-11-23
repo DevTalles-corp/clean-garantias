@@ -90,6 +90,7 @@ export function PurchaseFormStep({ onClose }: { onClose: () => void }) {
         )}
         <TextField
           label="Producto"
+          icon="product"
           placeholder="Ej. Hervidor eléctrico"
           value={form.product}
           onChangeText={(value) => setField('product', value)}
@@ -97,6 +98,7 @@ export function PurchaseFormStep({ onClose }: { onClose: () => void }) {
         />
         <TextField
           label="Tienda"
+          icon="store"
           placeholder="Ej. Falabella"
           value={form.store}
           onChangeText={(value) => setField('store', value)}
@@ -105,6 +107,7 @@ export function PurchaseFormStep({ onClose }: { onClose: () => void }) {
         />
         <DateField
           label="Fecha de compra"
+          icon="calendar"
           value={form.date}
           max={today}
           onChange={(value) => setField('date', value)}
@@ -113,6 +116,7 @@ export function PurchaseFormStep({ onClose }: { onClose: () => void }) {
         />
         <TextField
           label="Precio"
+          icon="money"
           placeholder="0"
           inputMode="numeric"
           value={form.price}
