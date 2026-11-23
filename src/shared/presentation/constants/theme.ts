@@ -1,7 +1,5 @@
 // Colores y tipografías del diseño de referencia.
 
-import { Platform } from 'react-native';
-
 const light = {
   ink: '#1B1A17',
   paper: '#F4F1EA',
@@ -97,8 +95,6 @@ export const fonts = {
   sansMedium: 'Geist-Medium',
   mono: 'GeistMono-Regular',
   monoMedium: 'GeistMono-Medium',
-  // Los símbolos (→ ●) usan la monoespaciada del sistema, como la referencia.
-  symbol: Platform.select({ ios: 'Menlo', default: 'monospace' }),
   display: 'BricolageGrotesque-Bold',
   displaySemi: 'BricolageGrotesque-SemiBold',
 } as const;

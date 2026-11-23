@@ -2,11 +2,14 @@ import { View } from 'react-native';
 
 import type { PurchaseSummary } from '@/products/presentation/models/purchase';
 import { AppText } from '@/shared/presentation/components/app-text';
+import { Icon } from '@/shared/presentation/components/icon';
 import { SectionLabel } from '@/shared/presentation/components/section-label';
 import { fonts } from '@/shared/presentation/constants/theme';
 import { formatMoney } from '@/shared/presentation/formatters/format-money';
 import { useTheme } from '@/shared/presentation/hooks/use-theme';
 import { makeStyles } from '@/shared/presentation/utils/make-styles';
+import type { WarrantyStatus } from '@/warranties/domain/entities/warranty.entity';
+import { statusIcons } from '@/warranties/presentation/constants/status-labels';
 
 export function ProtectedMoneyCard({ summary }: { summary: PurchaseSummary }) {
   const colors = useTheme();
@@ -34,20 +37,27 @@ export function ProtectedMoneyCard({ summary }: { summary: PurchaseSummary }) {
         <View style={{ flex: expired, backgroundColor: colors.redBar }} />
       </View>
       <View style={styles.legend}>
-        <Legend label={`${active} vigentes`} color={colors.inkBody} />
-        <Legend label={`${expiring} por vencer`} color={colors.amberBar} />
-        <Legend label={`${expired} vencidas`} color={colors.redBar} />
+        <Legend status="active" label={`${active} vigentes`} color={colors.inkBody} />
+        <Legend status="expiring" label={`${expiring} por vencer`} color={colors.amberBar} />
+        <Legend status="expired" label={`${expired} vencidas`} color={colors.redBar} />
       </View>
     </View>
   );
 }
 
-function Legend({ label, color }: { label: string; color: string }) {
+interface LegendProps {
+  status: WarrantyStatus;
+  label: string;
+  color: string;
+}
+
+function Legend({ status, label, color }: LegendProps) {
   const styles = useStyles();
   return (
-    <AppText style={[styles.legendText, { color }]}>
-      <AppText style={[styles.legendText, { color, fontFamily: fonts.symbol }]}>●</AppText> {label}
-    </AppText>
+    <View style={styles.legendItem}>
+      <Icon name={statusIcons[status]} size={12} color={color} />
+      <AppText style={[styles.legendText, { color }]}>{label}</AppText>
+    </View>
   );
 }
 
@@ -58,5 +68,6 @@ const useStyles = makeStyles((c) => ({
   detail: { fontSize: 14, color: c.inkBody },
   bar: { flexDirection: 'row', height: 8, borderRadius: 8, overflow: 'hidden', gap: 2 },
   legend: { flexDirection: 'row', flexWrap: 'wrap', gap: 14 },
+  legendItem: { flexDirection: 'row', alignItems: 'center', gap: 5 },
   legendText: { fontFamily: fonts.mono, fontSize: 12 },
 }));

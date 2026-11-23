@@ -1,3 +1,4 @@
+import type { IconName } from '@/shared/presentation/constants/icons';
 import type { Palette } from '@/shared/presentation/constants/theme';
 import type { WarrantyStatus, WarrantyType } from '@/warranties/domain/entities/warranty.entity';
 
@@ -5,6 +6,12 @@ export const statusLabels: Record<WarrantyStatus, string> = {
   active: 'Vigente',
   expiring: 'Por vencer',
   expired: 'Vencida',
+};
+
+export const statusIcons: Record<WarrantyStatus, IconName> = {
+  active: 'active',
+  expiring: 'expiring',
+  expired: 'expired',
 };
 
 export const statusColors: Record<WarrantyStatus, { text: keyof Palette; background: keyof Palette }> = {
