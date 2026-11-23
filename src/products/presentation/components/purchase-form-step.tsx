@@ -83,6 +83,7 @@ export function PurchaseFormStep({ onClose }: { onClose: () => void }) {
         <StepHeader title="Registrar compra" cancelColor={colors.body} onCancel={onClose} />
         {detected.length > 0 && (
           <View style={styles.banner}>
+            <Icon name="scan" color={colors.green} />
             <AppText style={styles.bannerText}>
               Detectamos tienda, fecha y total en el recibo. Revisa y completa el producto.
             </AppText>
@@ -189,8 +190,16 @@ export function PurchaseFormStep({ onClose }: { onClose: () => void }) {
 
 const useStyles = makeStyles((c) => ({
   content: { paddingHorizontal: 20, gap: 16 },
-  banner: { backgroundColor: c.greenSoft, borderRadius: 14, paddingVertical: 11, paddingHorizontal: 13 },
-  bannerText: { fontSize: 13, color: c.green },
+  banner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    backgroundColor: c.greenSoft,
+    borderRadius: 14,
+    paddingVertical: 11,
+    paddingHorizontal: 13,
+  },
+  bannerText: { flex: 1, fontSize: 13, color: c.green },
   group: { gap: 8 },
   label: { fontFamily: fonts.sansMedium, fontSize: 13, color: c.body },
   categories: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
