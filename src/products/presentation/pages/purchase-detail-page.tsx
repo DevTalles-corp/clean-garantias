@@ -11,7 +11,7 @@ import type { Purchase } from '@/products/presentation/models/purchase';
 import { WarrantyRemindersCard } from '@/reminders/presentation/components/warranty-reminders-card';
 import { AppText } from '@/shared/presentation/components/app-text';
 import { EmptyState } from '@/shared/presentation/components/empty-state';
-import { BackIcon } from '@/shared/presentation/components/icons';
+import { Icon } from '@/shared/presentation/components/icon';
 import { PrimaryButton } from '@/shared/presentation/components/primary-button';
 import { Screen } from '@/shared/presentation/components/screen';
 import { SectionLabel } from '@/shared/presentation/components/section-label';
@@ -54,7 +54,7 @@ export function PurchaseDetailPage({ id }: { id: string }) {
     <Screen gap={16} topPadding={0}>
       <View style={styles.header}>
         <Pressable accessibilityRole="button" onPress={goBack} style={styles.back}>
-          <BackIcon color={colors.ink} />
+          <Icon name="back" size={16} color={colors.ink} />
           <AppText style={{ fontSize: 14 }}>Volver</AppText>
         </Pressable>
         {purchase && (

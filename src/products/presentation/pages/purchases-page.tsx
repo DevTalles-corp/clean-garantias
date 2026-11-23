@@ -8,7 +8,7 @@ import { filterPurchases } from '@/products/presentation/models/purchase';
 import { usePurchaseFiltersStore } from '@/products/presentation/stores/purchase-filters.store';
 import { AppText } from '@/shared/presentation/components/app-text';
 import { EmptyState } from '@/shared/presentation/components/empty-state';
-import { SearchIcon } from '@/shared/presentation/components/icons';
+import { Icon } from '@/shared/presentation/components/icon';
 import { Screen } from '@/shared/presentation/components/screen';
 import { ScreenTitle } from '@/shared/presentation/components/screen-title';
 import { SectionLabel } from '@/shared/presentation/components/section-label';
@@ -42,7 +42,7 @@ export function PurchasesPage() {
     <Screen gap={14}>
       <ScreenTitle>Compras</ScreenTitle>
       <View style={styles.search}>
-        <SearchIcon color={colors.muted} />
+        <Icon name="search" color={colors.muted} />
         <TextInput
           accessibilityLabel="Buscar"
           value={filters.query}
