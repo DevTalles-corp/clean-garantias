@@ -25,10 +25,10 @@ Será una aplicación enteramente local con SQLite por ahora.
 
 ## Procedimiento:
 
-1- Ordenar archivos iniciales
-2- Entidades y reglas
-3- Tests de dominio
-4- Contratos de dominio
-5- Implementación de Contratos de dominio
-6- Casos de uso
-7- UI de Productos y Garantías
+1. Ordenar archivos iniciales
+2. Entidades y reglas
+3. Tests de dominio
+4. Contratos de dominio
+5. Implementación de Contratos de dominio
+6. Casos de uso
+7. UI de Productos y Garantías
