@@ -1,3 +1,4 @@
+import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, View } from 'react-native';
 
@@ -20,6 +21,7 @@ import { DateField } from '@/shared/presentation/components/date-field';
 import { FieldError } from '@/shared/presentation/components/field-error';
 import { Icon } from '@/shared/presentation/components/icon';
 import { PrimaryButton } from '@/shared/presentation/components/primary-button';
+import { TextButton } from '@/shared/presentation/components/text-button';
 import { TextField } from '@/shared/presentation/components/text-field';
 import { fonts } from '@/shared/presentation/constants/theme';
 import { formatDate } from '@/shared/presentation/formatters/format-date';
@@ -36,7 +38,7 @@ export function PurchaseFormStep({ onClose }: { onClose: () => void }) {
   const styles = useStyles();
   const today = useToday();
   const { top, bottom } = useScreenInsets();
-  const { form, detected, errors, setField, setErrors } = usePurchaseDraftStore();
+  const { photo, form, detected, errors, setField, setErrors, removePhoto } = usePurchaseDraftStore();
   const { data: categories = [] } = useCategories();
   const { data: settings } = useSettings();
   const register = useRegisterPurchase();
@@ -63,6 +65,7 @@ export function PurchaseFormStep({ onClose }: { onClose: () => void }) {
         purchaseDate: form.date,
         price: { amountCents: Number(form.price) * 100, currency: settings.currency },
         months: form.months,
+        photo: photo ?? undefined,
         receiptFileName: form.hasReceipt ? `recibo-${form.date}.jpg` : undefined,
       },
       {
@@ -87,6 +90,26 @@ export function PurchaseFormStep({ onClose }: { onClose: () => void }) {
             <AppText style={styles.bannerText}>
               Detectamos tienda, fecha y total en el recibo. Revisa y completa el producto.
             </AppText>
+          </View>
+        )}
+        {photo && (
+          <View style={styles.photo}>
+            <Image
+              source={{ uri: photo.uri }}
+              accessibilityLabel="Foto del recibo"
+              contentFit="cover"
+              style={styles.thumbnail}
+            />
+            <AppText numberOfLines={1} style={styles.photoName}>
+              {photo.fileName}
+            </AppText>
+            <TextButton
+              label="Quitar"
+              icon="delete"
+              onPress={removePhoto}
+              style={{ paddingVertical: 8 }}
+              textStyle={{ fontSize: 14, color: colors.red }}
+            />
           </View>
         )}
         <TextField
@@ -200,6 +223,18 @@ const useStyles = makeStyles((c) => ({
     paddingHorizontal: 13,
   },
   bannerText: { flex: 1, fontSize: 13, color: c.green },
+  photo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    padding: 10,
+    backgroundColor: c.surface,
+    borderWidth: 1,
+    borderColor: c.line12,
+    borderRadius: 14,
+  },
+  thumbnail: { width: 56, height: 72, borderRadius: 8, backgroundColor: c.tile },
+  photoName: { flex: 1, fontFamily: fonts.sansMedium, fontSize: 14 },
   group: { gap: 8 },
   label: { fontFamily: fonts.sansMedium, fontSize: 13, color: c.body },
   categories: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
