@@ -1,6 +1,6 @@
 # SPEC 02 — Recibos desde la galería
 
-> **Status:** Aprobado
+> **Status:** Implementado
 > **Depends on:** SPEC 01
 > **Date:** 2026-11-23
 > **Objective:** Elegir una foto real del recibo en «Fotos recientes», guardar su copia con la compra y mostrarla en el detalle.
@@ -120,7 +120,7 @@ Estados de la galería:
 - [ ] En iOS y Android, «Galería» muestra fotos reales del dispositivo en tres columnas, de más nueva a más antigua, bajo «Cancelar» y «Fotos recientes».
 - [ ] Con más de 60 fotos, llegar al final carga la página siguiente sin repetir fotos.
 - [ ] La lista no muestra vídeos.
-- [ ] «Cancelar» vuelve a la elección de origen.
+- [x] «Cancelar» vuelve a la elección de origen.
 - [ ] Con permiso denegado se puede volver a pedir; bloqueado, «Abrir ajustes» abre los ajustes de la app.
 - [ ] Al conceder el permiso en ajustes y volver, aparece la cuadrícula sin reiniciar la app.
 - [ ] Con acceso limitado, «Elegir más fotos» abre el selector y la cuadrícula se actualiza al cerrarlo.
@@ -132,11 +132,11 @@ Estados de la galería:
 - [ ] Si falla la copia o el registro, no quedan ni la compra ni el archivo, y aparece un toast.
 - [ ] El detalle muestra la foto tras reiniciar la app y tras borrar la original de la galería.
 - [ ] Eliminar la compra borra su archivo de `receipts/`.
-- [ ] Las compras de ejemplo y las de cámara siguen mostrando el recibo dibujado.
-- [ ] La cámara simulada conserva su flujo y «Adjuntar foto» del detalle no cambia.
-- [ ] En web, «Galería» muestra el aviso, «Ingresar a mano» funciona y no hay errores en consola; la captura se guarda en `playwright/`.
-- [ ] `grep -rnE "expo-media-library|expo-file-system" src` solo devuelve archivos de `infrastructure`.
-- [ ] `npx tsc --noEmit`, `npx expo lint`, `npx expo-doctor` y `npm test` terminan sin errores.
+- [x] Las compras de ejemplo y las de cámara siguen mostrando el recibo dibujado.
+- [x] La cámara simulada conserva su flujo y «Adjuntar foto» del detalle no cambia.
+- [x] En web, «Galería» muestra el aviso, «Ingresar a mano» funciona y no hay errores en consola; la captura se guarda en `playwright/`.
+- [x] `grep -rnE "expo-media-library|expo-file-system" src` solo devuelve archivos de `infrastructure`.
+- [x] `npx tsc --noEmit`, `npx expo lint`, `npx expo-doctor` y `npm test` terminan sin errores.
 
 ## Decisions
 
